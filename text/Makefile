@@ -1,4 +1,4 @@
-export TEXINPUTS=../tex//:
+export TEXINPUTS=../macros//:
 
 all: thesis.pdf
 
