@@ -5,3 +5,6 @@ This repository contains the LaTeX sources for my bachelor thesis about implemen
 - LaTeX
 - Python on path
 - `pygments` [package](http://pygments.org/)
+
+## Building:
+- Makefile located [in](https://github.com/petrroll/bachelor-thesis/blob/master/text/Makefile) `text/Makefile`
