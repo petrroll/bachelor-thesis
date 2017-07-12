@@ -1,1 +1,1 @@
-- Diagrams `.html` can be opened in draw.io.
+- Diagrams (`*.html`) can be opened in [draw.io](https://www.draw.io/).
