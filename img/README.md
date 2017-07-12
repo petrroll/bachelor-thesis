@@ -1,0 +1,1 @@
+- Diagrams `.html` can be opened in draw.io.
