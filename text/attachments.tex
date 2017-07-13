@@ -9,9 +9,7 @@
 %%% source code, data files, interactive charts, etc.). Electronic attachments
 %%% should be uploaded to SIS and optionally also included in the thesis on a~CD/DVD.
 %%% Allowed file formats are specified in provision of the rector no. 23/2016.
-%\chapwithtoc{Attachments}
-\chapter{Attachments}
-
+\chapwithtoc{Attachments}
 
 Attached to this thesis is a snapshot of Peachpie project’s git repository. It contains not only the implementation that was done as the practical part of this thesis but also the rest of the complete project. A more up to date version can be found on github\footnotemark.
 
@@ -21,7 +19,7 @@ To query only commits done by the author of this thesis please filter out author
 	\href{https://github.com/peachpiecompiler/peachpie}{github.com/peachpiecompiler/peachpie}
 }
 
-\section{Compilation}
+\secwithtoc{Compilation}
 The project’s only implicit dependency is .NET Core runtime and optionally its CLI SDK. If you want to compile the project yourself you can download both of them from the official site\footnotemark, for Linux, Windows, or MacOSX.
 
 After obtaining the .NET Core SDK please navigate to the folder with the Peachpie repository in your favourite terminal and:
@@ -35,7 +33,7 @@ dotnet build    //build the complete solution
 	\href{https://www.microsoft.com/net/download/core}{microsoft.com/net/download/core}
 }
 
-\section{Structure}
+\secwithtoc{Structure}
 There are three components relevant for this thesis within the repository. The compiler binaries, the compiler implementation, and the generators tests. Below are listed paths to them and in case of the compiler’s implementation also to some files containing the majority of our work to support generators.
 
 \begin{enumerate}
@@ -49,7 +47,7 @@ There are three components relevant for this thesis within the repository. The c
 	\item tests/generators
 \end{enumerate}
 
-\section{Manual testing}
+\secwithtoc{Manual testing}
 To compile an arbitrary PHP file into a .NET assembly with Peachpie invoke the compiler with a path to the PHP file as its first argument. The compiler assembly resides at aforementioned path and is called peach.exe or peach.dll depending of whether it was compiled for full .NET framework or .NET Core.
 
 \begin{minted}[breaklines=true]{text}
@@ -69,7 +67,7 @@ More about that approach can be found on a peachpie blog\footnotemark.
 	\href{http://www.peachpie.io/2017/04/tutorial-vs2017.html}{peachpie.io/2017/04/tutorial-vs2017.html}
 }
 
-\section{Automatic testing}
+\secwithtoc{Automatic testing}
 The Peachpie project includes a comprehensive set of automatic tests. These consist of PHP files that get compiled by the Peachpie compiler and run by a .NET runtime. If there is a PHP runtime present in the current path environment variable they get run by it as well. The results are then compared to ensure Peachpie compilation keeps the original PHP semantics and is, in terms of runtime behaviour, indistinguishable from the reference implementation.
 
 There is a number tests created as part of this thesis that ensure the implementation of generators support works correctly. They are located in a subfolder tests/generators. While they are in no particular order it is generally true that the higher their number the more complex aspect of generators they test. Below is a command that invokes all peachpie tests, including generator ones.
