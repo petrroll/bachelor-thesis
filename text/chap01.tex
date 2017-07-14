@@ -17,8 +17,11 @@ Furthermore instead of spending a lot of resources at once in the beginning to c
 
 There is one problem with iterators, though. They are quite tedious to write. The main issue stems from the fact that unlike in a normal method in which you would create the whole sequence at once in the iterator’s \emph{next} method you need to always explicitly save and then retrieve the current state of the execution. There is a lot of boilerplate associated with them as well. You need to create a new type and implement a number of methods that do not actually do anything useful.
 
-To give an example, creating an array of numbers $1$ to $n$ is a straightforward for loop with an assignment. In the case of an iterator’s \emph{next} method you need to first retrieve last used number, increase it by one, and then store it. You also need to implement a \emph{current} method that returns the last stored index and a few other ones that are basically just a busywork. 
+To give an example (\autoref{list1.1:iterator}), creating an array of numbers $1$ to $n$ is a straightforward for loop with an assignment. In the case of an iterator’s \emph{next} method you need to first retrieve last used number, increase it by one, and then store it. You also need to implement a \emph{current} method that returns the last stored index and a few other ones that are basically just a busywork. 
 
+\begin{listing}[H]
+	\caption{Method that creates everything at once and as an Iterator.}
+	\label{list1.1:iterator}
 \begin{minted}{php}
 <?php
 function by_one_at_once(){
@@ -43,6 +46,7 @@ class byOneIterator implements Iterator {
   public function valid(){ return ($this->position < 10); }
 }
 \end{minted}
+\end{listing}
 
 While for a monotone sequence of numbers even the iterator is still simple and readable it quickly stops to be the case with higher complexity of the iteration. The amount of code needed for state keeping increases quite quickly and an algorithm which would otherwise be really straightforward when used for the creation of the whole sequence at once gets convoluted. And that is where generators come into play.
 
@@ -53,8 +57,11 @@ Generators provide an easy way to write methods that return iterators while the 
 
 To achieve this a new keyword \emph{yield} or \emph{yield return} is usually introduced. It serves two purposes. First, it marks the spots where the \emph{next} method of the returned iterator should stop executing and save the current state. Second, much like the \emph{return} keyword it specifies a value being returned, in this case actually a value that should be set as \emph{current} on the iterator.
 
-To continue with our example of creating a sequence of numbers from $1$ to $n$. One would write a generator method the same way a normal method generating the whole array with the only difference that instead of an assignment into a result array the for loop would contain a \emph{yield} of the current index. 
+To continue with our example of creating a sequence of numbers from $1$ to $n$ (\autoref{list1.1:generator}). One would write a generator method the same way a normal method generating the whole array with the only difference that instead of an assignment into a result array the for loop would contain a \emph{yield} of the current index. 
 
+\begin{listing}[H]
+	\caption{By one sequence as a generator.}
+	\label{list1.1:generator}
 \begin{minted}{php}
 <?php
 function by_one_generator(){
@@ -63,6 +70,7 @@ function by_one_generator(){
   }
 }
 \end{minted}
+\end{listing}
 
 An iterator returned from such generator method (\autoref{fig1.2:generator}) would have a \emph{next} method that would always start from the last encountered \emph{yield}, execute update and condition part of the for loop, and then set a new element as the \emph{current} one.
 
@@ -75,8 +83,11 @@ An iterator returned from such generator method (\autoref{fig1.2:generator}) wou
 
 \section{Generators in PHP}
 
-Generators in PHP are not just about creating data, however. They support consuming data as well. Namely, one can send an arbitrary value into the returned iterator through its method called \emph{send}. This method takes one argument - the value being sent, sets it as a result of the last \emph{yield} expression, and resumes the evaluation the same way as \emph{next} method would.
+Generators in PHP are not just about creating data, however. They support consuming data as well (\autoref{list1.1:yieldLogger}). Namely, one can send an arbitrary value into the returned iterator through its method called \emph{send}. This method takes one argument - the value being sent, sets it as a result of the last \emph{yield} expression, and resumes the evaluation the same way as \emph{next} method would.
 
+\begin{listing}[H]
+	\caption{Generator method used as a logger.}
+	\label{list1.1:yieldLogger}
 \begin{minted}{php}
 <?php
 function logger_generator(){
@@ -90,7 +101,13 @@ class Logger{
   public function close(){ echo "END;";}
   public function log($line){ echo $line; }
 }
+
+$gen = logger_generator();
+$gen->send("First!");
+$gen->send("Second!");
+$gen->send("END");
 \end{minted}
+\end{listing}
 
 This means that unlike in C\# where \emph{yield} is a statement and therefore can not be a part of a bigger computation or a function call in PHP \emph{yield} can be literally anywhere, even in the place of a function call argument. This further complicates the state saving. In addition to all the local variables when \emph{yield} is part of some bigger expression we need to save its state as well. And it needs to be done the right way to ensure correct order of execution.
 
