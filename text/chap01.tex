@@ -94,7 +94,7 @@ class Logger{
 
 This means that unlike in C\# where \emph{yield} is a statement and therefore can not be a part of a bigger computation or a function call in PHP \emph{yield} can be literally anywhere, even in the place of a function call argument. This further complicates the state saving. In addition to all the local variables when \emph{yield} is part of some bigger expression we need to save its state as well. And it needs to be done the right way to ensure correct order of execution.
 
-Due to various design reasons \citep{CSharpYieldFinaly} C\# also limits where \emph{yields} can happen in regards to exception control blocks. They are not allowed in \emph{catch}\footnote{\citep{CSharpYieldCatch}} and \emph{finally} blocks altogether and can be only in \emph{try} blocks\footnote{\citep{CSharpYieldTry}} that do not have any associated catch blocks. PHP, on the other hand, allows yielding everywhere, be it in \emph{try}, \emph{catch}, or \emph{finally} blocks.
+Due to various design reasons \citep{CSharpYieldFinaly} C\# also limits where \emph{yields} can happen in regards to exception control blocks. They are not allowed in \emph{catch}\footnote{\citep{CSharpYieldCatch}} and \emph{finally} blocks\footnote{\citep{CSharpYieldFinaly}} altogether and can be only in \emph{try} blocks\footnote{\citep{CSharpYieldTry}} that do not have any associated catch blocks. PHP, on the other hand, allows yielding everywhere, be it in \emph{try}, \emph{catch}, or \emph{finally} blocks.
 
 \section{Generators in other languages}
 
