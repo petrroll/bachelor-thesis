@@ -1,6 +1,6 @@
 \chapter{Generators}
 \section{Iterators}
-Before going into generators we need to define iterators first. Iterators, as their name suggests, represent a state of iteration of some sequence backed by either themselves or some other object. In both C\# and PHP they can be arbitrary objects implementing an \emph{Iterator} (for PHP) or an \emph{IEnumerator} (in C\#) interface. 
+Before going into generators we need to define iterators first. Iterators, as their name suggests, represent a state of iteration of some sequence backed by either themselves or some other object. In both C\# and PHP they can be arbitrary objects implementing an \emph{Iterator}\footnote{\citep{IterPHP}} (for PHP) or an \emph{IEnumerator}\footnote{\citep{IterNet}} (in C\#) interface. 
 
 Both of these contain a number of methods  (\autoref{fig1.1:iterators}). However, for now we will focus on only two of them they both share, \emph{current} and \emph{next}. The first one - \emph{current} - should always return the element the iterator is currently pointing at. As such it should never modify the state of the iterator and should generally be side effect free. The second one, \emph{next}, should advance the iterator to the next item effectively changing what element the \emph{current} method returns.
 
@@ -94,15 +94,15 @@ class Logger{
 
 This means that unlike in C\# where \emph{yield} is a statement and therefore can not be a part of a bigger computation or a function call in PHP \emph{yield} can be literally anywhere, even in the place of a function call argument. This further complicates the state saving. In addition to all the local variables when \emph{yield} is part of some bigger expression we need to save its state as well. And it needs to be done the right way to ensure correct order of execution.
 
-Due to various design reasons C\# also limits where \emph{yields} can happen in regards to exception control blocks. They are not allowed in \emph{catch} and \emph{finally} blocks altogether and can be only in \emph{try} blocks that do not have any associated catch blocks. PHP, on the other hand, allows yielding everywhere, be it in \emph{try}, \emph{catch}, or \emph{finally} blocks.
+Due to various design reasons \citep{CSharpYieldFinaly} C\# also limits where \emph{yields} can happen in regards to exception control blocks. They are not allowed in \emph{catch}\footnote{\citep{CSharpYieldCatch}} and \emph{finally} blocks altogether and can be only in \emph{try} blocks\footnote{\citep{CSharpYieldTry}} that do not have any associated catch blocks. PHP, on the other hand, allows yielding everywhere, be it in \emph{try}, \emph{catch}, or \emph{finally} blocks.
 
 \section{Generators in other languages}
 
 These limitations are not unique to C\#, however. Both F\# and Visual Basic, the only other truly mainstream CIL based languages, also support generators with these restrictions. For them \emph{yield} is just a statement that can not appear in certain exception handling blocks.
 
-In fact, \emph{yield} being an expression holding a send value is not even a feature all dynamic languages share. JavaScript, for example, had just a brief support for such behavior and as of ECMA 2015 has \emph{yield} only as a statement.
+In fact, \emph{yield} being an expression holding a send value is not even a feature all dynamic languages share. JavaScript, for example, had just a brief support\footnote{\citep{ECMAYield}} for such behavior and as of ECMA 2015 has \emph{yield} only as a statement.
 
-That, nonetheless, does not mean that PHP is completely unique in regards to generators. In python, another mainly interpreted dynamic language, \emph{yields} are expressions and are allowed in exception handling blocks almost the same way as in PHP. In Lua they are implemented as a special version of coroutines and thus have an even wider set of features.
+That, nonetheless, does not mean that PHP is completely unique in regards to generators. In python\footnote{\citep{PythonYield}}, another mainly interpreted dynamic language, \emph{yields} are expressions and are allowed in exception handling blocks almost the same way as in PHP. In Lua\footnote{\citep{LUAYield}} they are implemented as a special version of coroutines and thus have an even wider set of features.
 
 
 
