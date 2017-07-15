@@ -13,7 +13,7 @@ We will talk about the C\# and Visual Basic compiler Roslyn later, but neither t
 
 \section{Common intermediate language}\label{CIL}
 
-CIL is an assembler defined by the common language infrastructure \citep{CLIEcma} to be a shared basis for all CLI languages (C\#, F\#, IronPython, …) and runtime implementations (.NET, Mono, dotGNU, …). It is platform independent and as such does not natively run on any CPU architecture. Instead, it must be either translated to the target platform’s native code beforehand or - more commonly - executed by a virtual machine such as CLR.
+CIL is an assembler defined by the common language infrastructure \citep{CLIEcma}\nocite{CSharpEcma} to be a shared basis for all CLI languages (C\#, F\#, IronPython, …) and runtime implementations (.NET, Mono, dotGNU, …). It is platform independent and as such does not natively run on any CPU architecture. Instead, it must be either translated to the target platform’s native code beforehand or - more commonly - executed by a virtual machine such as CLR.
 
 Despite being an assembler, thus inherently low-level, CIL is actually object oriented and so has a deep understanding of reference types. Its instruction set reflects this with means to create new instances, access their members, and so on. The CLI specification also dictates that, by default, the CIL should be memory safe. 
 
