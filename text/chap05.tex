@@ -1,8 +1,27 @@
 \chapter{Generators in Peachpie}
 
+The goal of this thesis is to enable Peachpie compiler to handle PHP generator methods while keeping as much of their original semantics as possible. That means we do not want to change their behaviour and want to enable all their features they have in PHP only now compiled to CIL and executed either by CLR or other CLI environment.
+ 
+As noted in previous chapters\footnote{Chapter \ref{sec:3:1}} that itself is complicated because unlike the PHP runtime Zend Engine, CIL and CLR do not have a native support for generators or generally pausing the execution of a method at arbitrary points. Also, almost all other CIL based languages with generators, such as C\# or F\#, that implement them by compiler transformations have them in a substantially more limited form than PHP.
+
+Other than that we also want to reuse existing Peachpie infrastructure and only implement generator specific bits when necessary. While this goal is not as important for our immediate work it is necessary for the project as a whole. Cluttering the compiler with logic for a feature that is not actually used as often would simply be inexcusable.
+
 \section{Basic generators implementation}
 
+Before dealing with all the complexities of PHP’s generators let us first explore how an implementation of their limited subset would work within Peachpie. Specifically, we will ignore \emph{yield} in exception handling blocks and expect it to be only in places where it could happen as a statement, i.e. no \emph{yield} inside an expression tree, for this chapter. 
+
+Much like Roslyn’s approach our implementation of generators within Peachpie will also be based on transforming the original generator method into an iterator's \emph{next} method. To not to repeat ourselves we will only point out the differences in next section.
+
 \subsection{Iterator object}
+
+Unlike in C\# where generator methods are free to return any object implementing a \emph{IEnumerator} interface the PHP specification dictates that the returned object must be an instance of a \emph{Generator} type \citep{GenPHP, GenPHPRFC}. This means that in Peachpie we cannot just synthesize a new type for each generator method as Roslyn does it.
+
+If we did that all reflection methods and type checks would report the actual synthesized type on the returned iterator instance instead of the \emph{Generator} type as required by PHP’s specification . We could theoretically hard code exceptions for these synthesized types into all methods that query an instance’s type but that would go against our goal to implement as little feature specific code as possible.
+
+Instead we must create one generator type in the Peachpie’s runtime library and use it as a basis for all generator methods to return. That approach, however, carries some limitations with it. The generator type can now include only shared code and fields. That means neither a specific \emph{next} method’s implementation nor fields for lifted local variables from said method.
+
+Other than that the \emph{Generator} type can be practically the same as the ones synthesized by Roslyn as it is a simple implementation of the PHP's \emph{Iterator} interface. It can hold captured reference to \emph{this} instance of the original generator method, state field that is needed to know what point should the \emph{next} method continue from, and fields for \emph{current} element and, since we are in PHP now, its \emph{key}. These are set before returning from the \emph{next} method and used as backing fields for the \emph{current} and \emph{key} methods on the generator.
+
 
 \subsection{Next method implementation and local variables}
 
