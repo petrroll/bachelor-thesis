@@ -13,7 +13,7 @@
 
 Attached to this thesis is a snapshot of Peachpie project’s git repository. It contains not only the implementation that was done as the practical part of this thesis but also the rest of the complete project. A more up to date version can be found on github\footnotemark.
 
-To query only commits done by the author of this thesis please filter out author \emph{Petr Houška} or email \emph{houskape@gmail.com}.
+To query only commits done by the author of this thesis, please filter out author \emph{Petr Houška} or email \emph{houskape@gmail.com}.
 
 \footnotetext{
 	\href{https://github.com/peachpiecompiler/peachpie}{github.com/peachpiecompiler/peachpie}
@@ -34,7 +34,7 @@ dotnet build    //build the complete solution
 }
 
 \secwithtoc{Structure}
-There are three components relevant for this thesis within the repository. The compiler binaries, the compiler implementation, and the generators tests. Below are listed paths to them and in case of the compiler’s implementation also to some files containing the majority of our work to support generators.
+There are three components relevant for this thesis within the repository. The compiler binaries, the compiler implementation, and the generators tests. Below are listed paths to them and, in case of the compiler’s implementation, also to some files containing the majority of our work to support generators.
 
 \begin{enumerate}
 	\item \label{peach}src/Compiler/peach	
@@ -54,9 +54,9 @@ To compile an arbitrary PHP file into a .NET assembly with Peachpie invoke the c
 $\src\Compiler\peach> dotnet run .\test.php
 \end{minted}
 
-Please do note that an assembly compiled this way will require PHP runtime libraries to run. These libraries can be found, for example, in the bin output of the \hyperref[peach]{compiler} (peach) project.
+Please do note, that an assembly compiled this way will require Peachpie runtime libraries to run. These can be found, for example, in the bin output of the \hyperref[peach]{compiler} (peach) project.
 
-Alternatively it is possible to use a Peachpie console application sample\footnotemark. It includes a .msbuildproj file that configures the .NET Core CLI to download and use both the Peachpie compiler toolchain and required runtime libraries automatically.\footnotetext{\href{https://github.com/iolevel/peachpie-samples/tree/master/console-application}{github.com/iolevel/peachpie-samples/tree/master/console-application}} More about that approach can be found on a peachpie blog\footnotemark.
+Alternatively, it is possible to use a Peachpie console application sample\footnotemark. It includes a .msbuildproj file that configures the .NET Core CLI to download and use both the Peachpie compiler toolchain and required runtime libraries automatically.\footnotetext{\href{https://github.com/iolevel/peachpie-samples/tree/master/console-application}{github.com/iolevel/peachpie-samples/tree/master/console-application}} More about that approach can be found on the peachpie blog\footnotemark.
 
 
 \footnotetext{
@@ -64,9 +64,9 @@ Alternatively it is possible to use a Peachpie console application sample\footno
 }
 
 \secwithtoc{Automatic testing}
-The Peachpie project includes a comprehensive set of automatic tests. These consist of PHP files that get compiled by the Peachpie compiler and run by a .NET runtime. If there is a PHP runtime present in the current path environment variable they get run by it as well. The results are then compared to ensure Peachpie compilation keeps the original PHP semantics and is, in terms of runtime behaviour, indistinguishable from the reference implementation.
+The Peachpie project includes a comprehensive set of automatic tests. These consist of PHP files that get compiled by the Peachpie compiler and run by a .NET runtime. If there is a PHP runtime present in the current path environment variable, they get run by it as well. The results are then compared to ensure Peachpie compilation keeps the original PHP semantics and is, in terms of runtime behaviour, indistinguishable from the reference implementation.
 
-There is a number tests created as part of this thesis that ensure the implementation of generators support works correctly. They are located in a subfolder tests/generators. While they are in no particular order it is generally true that the higher their number the more complex aspect of generators they test. Below is a command that invokes all peachpie tests, including generator ones.
+There is a number tests created as part of this thesis that ensure the implementation of generators support works correctly. They are located in a subfolder tests/generators. While they are in no particular order, it is generally true that the higher their number the more complex aspect of generators they test. Below is a command that invokes all peachpie tests, including generator ones.
 
 \begin{minted}[breaklines=true]{text}
 $\src\Tests\Peachpie.ScriptTests> dotnet test
