@@ -84,13 +84,13 @@ On the other hand, capturing the \emph{context} on the generator’s creation be
 
 Due to architectural differences, we will not have a standalone rewriter component in Peachpie. While it would be possible, there are, as of writing this thesis, no other candidates that could make use of them within the compiler. And adding a generic support just to have one rewriter for generators goes against our goal to keep the implementation as simple as possible. Instead, our implementation will rely on support by the \emph{SemanticBinder}, slightly changed emit of a \emph{MethodSymbol} and \emph{StartBlock}\footnote{Chapter \ref{StartBlock}}, and a new semantic node. 
 
-As long as we limit ourselves to yield only at places where it could be as a statement, which is the temporal restriction we have set for this chapter, the support provided by the \emph{SemanticBinder} can be minimal. It needs to do two things: bind the new semantic object - \emph{BoundYieldExpression} - when it encounters the AST’s \emph{YieldExpression} and mark the method’s symbol as a generator. 
+As long as we limit ourselves to \emph{yield} only at places where it could be as a statement, which is the temporal restriction we have set for this chapter, the support provided by the \emph{SemanticBinder} can be minimal. It needs to do two things: bind the new semantic object - \emph{BoundYieldExpression} - when it encounters the AST’s \emph{YieldExpression} and mark the method’s symbol as a generator. 
 
 \subsection{Bound yield expression}
 
-The \emph{BoundYieldExpression} can be a rather simple semantic node with two children: the yielded key and yielded value expressions. It should generate CIL to set the yielded key and value fields on the generator instance, update its state, return, and mark a label for the subsequent continuation (\autoref{fig5.1:Rewriter}). 
+The \emph{BoundYieldExpression} can be a rather simple semantic node with two children: the yielded key and yielded value expressions. It should generate CIL to set the yielded key and value fields on the generator instance, update its state, \emph{return}, and mark a label for the subsequent continuation (\autoref{fig5.1:Rewriter}). 
 
-Due to being an expression, albeit for this chapter limited to places where it could also be a statement, it needs to push and leave its value on the evaluation stack. However, since its value will not be needed due to our restriction, it can just as well be an empty \emph{PhpValue}. The value will always get discarded, anyway. The restriction also handles the problem that we are emitting a return from within an expression, i.e. in a situation in which the evaluation stack might not be empty.
+Due to being an expression, albeit for this chapter limited to places where it could also be a statement, it needs to push and leave its value on the evaluation stack. However, since its value will not be needed due to our restriction, it can just as well be an empty \emph{PhpValue}. The value will always get discarded, anyway. The restriction also handles the problem that we are emitting a \emph{return} from within an expression, i.e. in a situation in which the evaluation stack might not be empty.
 
 It is true that all of the \emph{BoundYieldExpression} could be replaced with a number of normal PHP statements by lowering. That would, however, require the \emph{SemanticBinder} to be able to produce multiple semantic statements for only one AST node, and for the \emph{BuilderVisitor} to accept them. And while such support could be added, it was decided that it would be too complex.
 
@@ -104,7 +104,7 @@ It is true that all of the \emph{BoundYieldExpression} could be replaced with a 
 
 \subsection{Start block}\label{StartBlock}
 
-The \emph{StartBlock} is a special instance of a \emph{BoundBlock} that is present in the beginning of each method’s control flow graph (\autoref{fig3.4:EmitOrder}). As such, its emit routine is the perfect place to generate a jump table for generator methods. It can, when its enclosing method symbol is a generator, query all present yield statements that were previously set by, for example, the semantic binder and generate the whole jump table.
+The \emph{StartBlock} is a special instance of a \emph{BoundBlock} that is present in the beginning of each method’s control flow graph (\autoref{fig3.4:EmitOrder}). As such, its emit routine is the perfect place to generate a jump table for generator methods. It can, when its enclosing method symbol is a generator, query all present \emph{yield} statements that were previously set by, for example, the semantic binder and generate the whole jump table.
 
 \subsection{Method symbol}
 
@@ -112,13 +112,28 @@ The method symbol’s emit must be changed as well. When it represents a generat
 
 Instead, three things need to happen. First, a new static method representing the generator’s \emph{next} method must be synthesized in the enclosing type. Second, the original body needs to be emitted inside the synthesized method with its \emph{CodeGenerator} set to offload local variables into a generator’s locals field. As explained earlier, the synthesized \emph{next} method accepts a \emph{Generator} as a parameter.
 
-Third, a sequence of statements that create, initiate, and return a \emph{Generator} instance must be emitted as the actual current MethodSymbol’s body, producing a method that returns an iterator. As part of the initiation phase a delegate to the synthesized \emph{next} method must get created and assigned to the newly constructed generator instance. Also, values of all parameters need to get copied to the generator’s locals array, as previously discussed.
+Third, a sequence of statements that create, initiate, and \emph{return} a \emph{Generator} instance must be emitted as the actual current MethodSymbol’s body, producing a method that returns an iterator. As part of the initiation phase a delegate to the synthesized \emph{next} method must get created and assigned to the newly constructed generator instance. Also, values of all parameters need to get copied to the generator’s locals array, as previously discussed.
 
 \section{Yield as an expression - theory}
 
+With that, we have described a design of a generator’s compilation within the Peachpie platform with a featureset limited to more or less C\# generators. Now, let us broaden it with the support for \emph{yield} as an expression. Before going into details on the specific implementation, let us first take a look at the general idea behind our approach. 
+
+As said before, a \emph{yield} being an expression is a problem, because an expression can happen in a situation where the CIL evaluation stack might not be empty. Since \emph{yield}s include a \emph{return} and returning with a non-empty evaluation stack is forbidden, it does not go well together. Even if it were allowed, there would still be the problem that the non-empty evaluation stack would represent some sort of state - one that would need to get saved and then retrieved upon the continuation.
+
 \subsection{Possible approaches}
 
+Fundamentally, there are two possible ways to approach this problem. One can either come up with a mechanism to save and then retrieve the evaluation stack or rearrange the semantic graph so that \emph{yield}s are only in places where they could happen as statements.
+
+While the first approach might be appealing, after all it more closely mimics the Zend Engine’s way of handling yields\footnote{Chapter \ref{ZendGen}}, it is almost impossible to implement. Because the CIL does not have any instructions to query the contents or to completely save/load the evaluation stack, the compiler would have to do it manually. That means it would have to track the stack’s content throughout the compilation and then emit individual instructions to save/load its content, one element at a time.
+
+That would mean two things. First, we would either have to create our own version of the \emph{CodeGenerator} that would be able to keep track of what the evaluation stack contains at any moment or we would have to change the emit of each semantic node to save the information about what it puts on the stack explicitly. Both of these would be relatively complex to do and, in case of the second approach, even to maintain due to possible new semantic nodes. Second, either of them would mean an increase in memory usage because we would need to remember information previously not required, all of which just to support only a \emph{yield} as an expression. 
+
+On the other hand, the second approach, to rearrange the semantic tree, requires only a few local implementation changes and does not cause a substantial memory consumption increase. Essentially, it is based on the idea that we can break an expression tree into a series of statements while keeping the meaning and order of execution the same.
+
 \subsection{Branch capture \& yield splitting}
+
+There are two important observations required for this method. First, a yield can be broken into two semantic nodes. A statement that does the value and key setting, state saving, \emph{return}, and marking the continuation label, acting as the equivalent of a C\# \emph{yield} statement. The other node is an expression that represents the sent value. If the expression directly follows the statement, the result is, in terms of emitted CIL, the same as with one combined yield expression (\autoref{fig5.2:Splitting}). 
+
 
 \begin{figure}[h]
 	\centering	
@@ -127,12 +142,25 @@ Third, a sequence of statements that create, initiate, and return a \emph{Genera
 	\label{fig5.2:Splitting}
 \end{figure}
 
+Second, we can cut any branch from an expression tree and prepend it before the tree while keeping the meaning of the program the same except for the order of execution. To do it, we need to create a temporal variable, replace the branch in the tree with a read from said variable, and prepend the tree with a statement that assigns the branch that was replaced to the variable it was replaced with (\autoref{fig5.2:CaptureBranch}). Let us call this process capturing a branch.
+
+The problem with the order of execution is that the captured branch, being lifted to the prepended statement, will get executed before any other expression from the tree. Even before all the expressions in branches that might be to the left of the captured branch and that were therefore supposed to be executed first. In the figure below, the expressions $5$ and $6$ respectively will get executed first, even though they should come after expressions $1$, $2$, $3$, and $4$.
+
+
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_2_capturing}	
 	\caption{Capturing a sole branch.}
 	\label{fig5.2:CaptureBranch}
 \end{figure}
+
+An obvious solution to this problem is to cut and prepend not only the one branch we want to capture, but also, in their respective order from left to right, all other branches that are supposed to get executed before it (\autoref{fig5.2:CaptureAllBranch}). Since the semantic graph emit, and thus also the execution, follows a post-order traversal, we must cut and prepend all branches that are higher and to the left of the branch we want to capture. 
+
+To be specific, that includes all branches that start to the left of the path between the root of our captured branch and the root of the whole semantic graph. The reason lies in a post-order traversal of the semantic graph. 
+
+It starts with the graph’s root. Then it goes through the root’s leftmost child, followed by its next child, and so on. Let us say, for example, that the second element of our aforementioned path is the root’s third child. When the traversal enters it after going through the branches started by the root’s first two children, it goes into its leftmost child first, again. It then continues the same way until it encounters the root of our branch. When that happens, it keeps following the same logic, traversing the whole branch before closing its root and starting to visit any other nodes. After the traversal is finished with the branch, it closes its root and goes one level up, starting to traverse the branch’s root’s first sibling to the right.   
+
+All other expressions, be it those directly on the path or on branches to the right, are supposed to be evaluated after our branch and, as such, do not have to be cut and prepended. The ones on the path have our branch among their children and thus need its result - our branch - to be evaluated first. And the ones on the right need to be evaluated later, simply because of post-order traversal rules. 
 
 \begin{figure}[h]
 	\centering	
