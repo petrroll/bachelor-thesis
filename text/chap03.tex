@@ -90,7 +90,7 @@ That is the reason why the \emph{BuilderVisitor} only goes through top level sta
 In Peachpie, the CIL code generation is based solely on the semantic graph. Each of its elements, be it an edge, a statement, or a symbol, has a method, \emph{Generate} or \emph{Emit}, that can create the element’s complete CIL code representation. These methods do not produce the bytecode themselves. Instead, they use a component called \emph{CodeGenerator}, a thin wrapper around Roslyn’s \emph{ILBuilder}.
 
 
-\subsection{Code generator}
+\subsection{Code generator}\label{CodeGen}
 \emph{CodeGenerator} is fundamentally an abstraction of a CIL code stream. It can do two things: append either individual CIL instructions or their short sequences to the current code stream and realize the stream into actual bytecode. The only higher level service it provides is the ability to change where it should look for certain important items.
 
 One can, for example, set an arbitrary variable as a method's \emph{this} object or specify that local variables should live in some PHP array instead of on the evaluation stack. Appending a load from a local variable then results in the correct CIL sequence being emitted. That means either a load from the locals part of the evaluation stack or, when the place of locals was changed on the current \emph{CodeGenerator}, some \emph{PhpArray}, which itself might need to get loaded from some field first. 
