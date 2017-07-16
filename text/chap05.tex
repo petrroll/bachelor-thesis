@@ -29,9 +29,46 @@ Other than that the \emph{Generator} type can be practically the same as the one
 
 \subsection{Context handling}
 
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.70]{../img/5_1_Generator}	
+	\caption{Transformation of the generator method.}
+	\label{fig5.1:Generator}
+\end{figure}
+
+\begin{listing}[H]
+\caption{Simplified version of the Generator type.}
+\label{list5.1:GeneratorType}
+\begin{minted}{csharp}
+public delegate void GeneratorStateMachineDelegate(
+  Context ctx, object @this, PhpArray locals, 
+  Generator gen);
+public class Generator : Iterator
+{
+  readonly Context _ctx;
+  readonly GeneratorStateMachineDelegate _stateMachineMethod;
+  readonly object _this;
+  readonly PhpArray _locals;
+  internal int _state = 0;
+  internal PhpValue _currValue, _currKey;
+  public void next() =>
+    _stateMachineMethod.Invoke(_ctx, _this, _locals, gen: this);
+}
+\end{minted}
+\end{listing}
+
+
 \subsection{Rewriter}
 
 \subsection{Bound yield expression}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_1_rewriter}	
+	\caption{Rewrite of a yield expression.}
+	\label{fig5.1:Rewriter}
+\end{figure}
+
 
 \subsection{Start block}
 
@@ -43,23 +80,148 @@ Other than that the \emph{Generator} type can be practically the same as the one
 
 \subsection{Branch capture \& yield splitting}
 
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_2_yieldSplitting}	
+	\caption{Splitting of a yield into an expression and a statement.}
+	\label{fig5.2:Splitting}
+\end{figure}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_2_capturing}	
+	\caption{Capturing a sole branch.}
+	\label{fig5.2:CaptureBranch}
+\end{figure}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_2_captureAllOnPath}	
+	\caption{Capturing a whole branch while maintaining execution order.}
+	\label{fig5.2:CaptureAllBranch}
+\end{figure}
+
 \subsection{Semantic tree transformation}
 
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_2_yieldCapturing}	
+	\caption{Capturing a whole branch starting with a yield.}
+	\label{fig5.2:CaptureYield}
+\end{figure}
+
 \subsection{Short circuit evaluation}
+
+\begin{listing}[H]
+\caption{Conditional expression whose captured branch is not conditioned.}
+\label{list5.3:CondNotGuarded}
+\begin{minted}{php}
+<?php
+// original expression before capturing the yield branch
+$result = isTrue() ? yield 0 : “falseValue”;
+
+$tempBranchResult = yield 0;
+$result = isTrue() ? $tempBranchResult : "falseValue";
+\end{minted}
+\end{listing}
+
+\begin{listing}[H]
+\caption{Conditional expression whose condition is evaluated twice.}
+\label{list5.3:CondTwice}
+\begin{minted}{php}
+<?php
+if (isTrue()) { $tempBranchResult = yield 0; }
+$result = isTrue() ? $tempBranchResult : "falseValue";
+\end{minted}
+\end{listing}
+
+\begin{listing}[H]
+\caption{Conditional expression captured correctly.}
+\label{list5.3:CondCorrect}
+\begin{minted}{php}
+<?php
+$tmpResult = isTrue();
+if ($tmpResult) { $tempBranchResult = yield 0; }
+$result = $tmpResult ? $tempBranchResult : "falseValue";
+\end{minted}
+\end{listing}
 
 \section{Yield as an expression - implementation}
 
 \subsection{Binding multiple elements}
 
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_BoundBag}	
+	\caption{Bound bag.}
+	\label{fig5.3:BoundBag}
+\end{figure}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_BoundWholeExpression}	
+	\caption{Builder visitor's and semantic binder's relationship.}
+	\label{fig5.3:BindWholeExpr}
+\end{figure}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_newStatement}	
+	\caption{Connecting a bound bag as a new statement.}
+	\label{fig5.3:BindNewStm}
+\end{figure}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.70]{../img/5_3_newInIfEdge}	
+	\caption{Connecting a bound bag as a condition edge's condition.}
+	\label{fig5.3:BindIfEdge}
+\end{figure}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_switchEdge}	
+	\caption{Switch edge diagram.}
+	\label{fig5.3:SwitchEdge}
+\end{figure}
+
 \subsection{Capturing branches with yields}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_branchesWithYields}	
+	\caption{Capturing a branch with a yield.}
+	\label{fig5.3:CaptureWithYield}
+\end{figure}
 
 \subsection{Correctness of modified capturing algorithm}
 
 \subsection{Creating and keeping the pre-bound graph}
 
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_blockOrdinal}	
+	\caption{Ordinal number of bound blocks.}
+	\label{fig5.3:BlocksOrdinal}
+\end{figure}
+
 \subsection{Path between the root and yields}
 
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_path}	
+	\caption{Path between a yield and expression tree's root.}
+	\label{fig5.3:Path}
+\end{figure}
+
 \subsection{Conditioned branches}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/5_3_yieldInCond}	
+	\caption{Capturing a yield in a conditioned branch.}
+	\label{fig5.3:YieldInCond}
+\end{figure}
 
 \subsection{Implementation remarks}
 
@@ -70,3 +232,11 @@ Other than that the \emph{Generator} type can be practically the same as the one
 \subsection{Solution in Peachpie}
 
 \section{Future work}
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[scale=0.75]{../img/6_6_yieldLowering}	
+	\caption{Possible lowering solution to a yield expression and a yield statement.}
+	\label{fig5.5:YieldInCond}
+\end{figure}
+
