@@ -81,7 +81,7 @@ An iterator returned from such a generator method (\autoref{fig1.2:generator}) w
 	\label{fig1.2:generator}
 \end{figure}
 
-\section{Generators in PHP}
+\section{Generators in PHP}\label{PHPGen}
 
 Generators in PHP are not just about creating data, however. They support consuming data as well (\autoref{list1.1:yieldLogger}). Namely, one can send an arbitrary value into the returned iterator through its method called \emph{send}. This method takes one argument - the value being sent, sets it as a result of the last \emph{yield} expression, and resumes the evaluation the same way as the \emph{next} method would.
 
