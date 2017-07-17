@@ -80,24 +80,24 @@ Yield 5;
 Yield 10;
 
 // New method's body
-switch(this.state){
-  case 1:
-    goto: Label_1;
+switch(this.state){  // Jump table.
+  case 1:            // If state represents 1st yield.
+    goto: Label_1;   // Jump to label for 1st yield.
     break;
-  case 2:
-    goto: Label_2;
+  case 2:            // If state represents 2nd yield.
+    goto: Label_2;   // Jump to label for 2nd yield.
     break;
 }
 
-this.current = 5;
-this.state = 1;
+this.current = 5;    // Set yielded item as current.
+this.state = 1;      // Set state for 2nd yield.
 return;
-Label_1;
+Label_1;             // Label for 1st yield.
 
-this.current = 10;
-this.state = 2;
+this.current = 10;   // Set yielded item as current.
+this.state = 2;      // Set state for 2nd yield.
 return;
-Label_2;
+Label_2;             // Label for 2nd yield.
 \end{minted}
 \end{listing}
 

@@ -92,6 +92,7 @@ Generators in PHP are not just about creating data, however. They support consum
 <?php
 function logger_generator(){
   $logger = new Logger();
+  // The sent value is assigned to the $line variable.
   while(($line = yield) != "END"){
     $logger->log($line);
   }

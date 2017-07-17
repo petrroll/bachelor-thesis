@@ -32,9 +32,9 @@ Lastly, while not a rule, the stack is generally used as a store for temporal va
 	\label{list2.1}
 \begin{minted}{csharp}
 public void M(int a) {
-  int b = 3;
-  int c = 5;    
-  G(a + b * c);
+  int b = 3;     // IL_0001 & IL_0002
+  int c = 5;     // IL_0003 & IL_0004   
+  G(a + b * c);  // IL_0005 - IL_000b
 }
 public int G(int a){/*Something*/}
 \end{minted}
