@@ -63,7 +63,7 @@ cil managed {
 
 All of these mean that you cannot simply pause and save the execution of a method at an arbitrary point with just one or even a few CIL instructions. To completely capture the current state, you not only need to save all the local variables and parameters somewhere off the stack, but you must also do the same for every temporal value that might at that moment live on the stack. And there is no simple way to query what is there. You either need to construct the information in some other way or restrain yourself to saving the state only when the stack is empty.
 
-\subsection{Exception handling}
+\subsection{Exception handling}\label{CILExc}
 
 The last notable thing about CIL is that it has a notion of exceptions and their handling blocks. Try, catch, and finally are all first class citizens in the language and are bound by a number of rules \citep[Sec. I.12.4]{CLIEcma}.
 

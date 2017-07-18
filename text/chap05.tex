@@ -130,7 +130,7 @@ That would mean two things. First, we would either have to create our own versio
 
 On the other hand, the second approach, to rearrange the semantic tree, requires only a few local implementation changes and does not cause a substantial memory consumption increase. Essentially, it is based on the idea that we can break an expression tree into a series of statements while keeping the meaning and order of execution the same.
 
-\subsection{Branch capture \& yield splitting}
+\subsection{Branch capture \& yield splitting}\label{Capture}
 
 There are two important observations required for this method. First, a \emph{yield} can be broken into two semantic nodes. A statement that does the value and key setting, state saving, \emph{return}, and marking the continuation label, acting as the equivalent of a C\# \emph{yield} statement. The other node is an expression that represents the sent value. If the expression directly follows the statement, the result is, in terms of emitted CIL, the same as with one combined \emph{yield expression} (\autoref{fig5.2:Splitting}). 
 
@@ -192,11 +192,11 @@ The tree representing a prepended assignment of the capture branch contains a \e
 
 Now we have to repeat the aforementioned process for each expression tree containing \emph{yield}s and for each of their branches that starts with them. Every run of our algorithm fixes one \emph{yield} and results in a correct semantic graph that can serve as a starting point for another run. This means that after a finite number of repetitions, all \emph{yield}s will have been split while keeping the original program’s meaning and execution order intact.
 
-\subsection{Short circuit evaluation}
+\subsection{Short circuit evaluation}\label{shortCircTheory}
 
-The solution from the previous section would work perfectly, if it were certain that all branches of an expression tree will always get evaluated. The problem is, that they do not. For example, a conditional operator \emph{? :} is represented by an expression that has three children, only two of which get evaluated in any given situation. Its children are a \emph{condition expression} that gets evaluated first and every time, and two \emph{conditioned expression}s representing its return value. One, that gets evaluated and returned when the condition turns out to be true, and one, for when it is false. A similar situation transpires with short-circuit evaluated binary expressions such as coalesce, and, and or operators.
+The solution from the previous section would work perfectly, if it were certain that all branches of an expression tree will always get evaluated. The problem is that they do not. For example, a conditional operator \emph{? :} is represented by an expression that has three children, only two of which get evaluated in any given situation. Its children are a \emph{condition expression} that gets evaluated first and every time, and two \emph{conditioned expression}s representing its return value. One that gets evaluated and returned when the condition turns out to be true and one for when it is false. A similar situation transpires with short-circuit evaluated binary expressions such as coalesce, and, and or operators.
 
-The problem is, that a \emph{yield} can be inside one of these \emph{conditioned branches} and when its gets captured and prepended before the tree, it will always get executed regardless of the \emph{condition}. For example, even if the \emph{condition} were false, an expression tree for its true branch, being prepended before the tree because it includes a \emph{yield}, would still get executed and had its result saved into a temporal variable. The variable would simply not get used as a result of the \emph{condition expression} (\autoref{list5.3:CondNotGuarded}).
+The problem is that a \emph{yield} can be inside one of these \emph{conditioned branches} and when its gets captured and prepended before the tree, it will always get executed regardless of the \emph{condition}. For example, even if the \emph{condition} were false, an expression tree for its true branch, being prepended before the tree because it includes a \emph{yield}, would still get executed and had its result saved into a temporal variable. The variable would simply not get used as a result of the \emph{condition expression} (\autoref{list5.3:CondNotGuarded}).
 
 \begin{listing}[H]
 \caption{Conditional expression whose captured branch is not conditioned.}
@@ -260,7 +260,7 @@ The idea behind our implementation is following: when the \emph{SemanticBinder} 
 
 In fact, saying it returns an already transformed forest is not technically correct. There is no transformation. All the branch capturing and conditioned expressions handling is done directly when the respective semantic nodes are created by the semantic binder. There is no single expression tree created first and then transformed, the correct forrest gets created right away.
 
-\subsection{Binding multiple elements}
+\subsection{Binding multiple elements}\label{BindMultiple}
 
 To support the transformation algorithm within the \emph{SemanticBinder}, we need to enable it to return multiple trees that represent the captured branches first. Specifically, in addition to either a bound statement or an expression it always needs to be able to return an arbitrary semantic subgraph that is supposed to go before the currently bound element. We will call it a \emph{pre-bound graph}.
 
@@ -270,7 +270,7 @@ While it would be possible to create something like a \emph{conditioned statemen
 
 To enable returning a full subgraph, we need a container for the bound element and the graph itself, first. It can be a simple structure holding either a bound statement or a bound expression and two references to bound blocks (\autoref{fig5.3:BoundBag}). Two because, as we will see, we need both the first and last block to properly connect the \emph{pre-bound graph}. Let us call them \emph{first} and \emph{last pre-bound blocks} and the whole container a \emph{bound bag}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_BoundBag}	
 	\caption{Bound bag.}
@@ -281,7 +281,7 @@ With the container, we need to change the public public API of the \emph{Semanti
 
 Instead, we can make the original methods private and add new public methods, let us call them \emph{BindWholeStatement} and \emph{BindWholeExpression}, that will return a \emph{bound bag}. For now, they can call the private ones and only wrap their results into \emph{bound bags} with empty \emph{pre-bound graphs} (\autoref{fig5.3:BindWholeExpr}). We will get back to them later too. Before that, however, we need to fix all the external calls to the - now private - methods and change them to accept a bound bag instead of a sole bound item
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_BoundWholeExpression}	
 	\caption{Builder visitor's and semantic binder's relationship.}
@@ -290,7 +290,7 @@ Instead, we can make the original methods private and add new public methods, le
 
 The fix is straightforward for statements. The original \emph{BindStatement} method is externally called just once, when the \emph{BuilderVisitor} needs to bind a new statement to add it to its \emph{current bound block}. To support getting a \emph{bound bag} instead of plain bound statement we need to connect its \emph{pre-bound graph} before adding the bound statement to the \emph{current block}. That means creating a simple edge between the \emph{current block} and the \emph{first pre-bound block}, and setting the \emph{last pre-bound block} as the new \emph{current block} (\autoref{fig5.3:BindNewStm}). As the one, into which the bound element will get added.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_newStatement}	
 	\caption{Connecting a bound bag as a new statement.}
@@ -309,7 +309,7 @@ For \emph{condition edge}’s condition, \emph{foreach}’s enumeree, and \emph{
 
 Thus, for these three the solution is to take the \emph{first pre-bound block}, connect it to the edge’s \emph{source block}, set the \emph{last pre-bound block} as the new \emph{source block} (\autoref{fig5.3:BindIfEdge}), and continue the edge creation using a bound expression as before.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.70]{../img/5_3_newInIfEdge}	
 	\caption{Connecting a bound bag as a condition edge's condition.}
@@ -318,16 +318,16 @@ Thus, for these three the solution is to take the \emph{first pre-bound block}, 
 
 This approach is, unfortunately, not applicable for the fourth case, a \emph{switch edge}’s (\autoref{fig5.3:SwitchEdge}) case value expression. This is an expression representing the value a \emph{switch value} is compared to for each case block. The reason is, that the \emph{case value expression} is executed neither in the beginning of the edge or directly after some other block, so there is simply no block to connect the \emph{case value}’s \emph{pre-bound graph} to. With it we need to go the first way and implement a support for \emph{pre-bound blocks} directly on the edge. Actually, not on the edge itself but on the \emph{case block} the \emph{switch edge} points to.
 
-\begin{figure}[h]
+That itself is not that complicated. We can remember the whole case value bound bag in the case block and emit the \emph{pre-bound graph} directly before the case value condition. The issue is, that the evaluation stack is not guaranteed and actually never is empty at that point. Because only one case block can be taken in PHP switch, Peachpie actually keeps the \emph{switch value} on the evaluation stack from the beginning of a switch edge evaluation and goes one \emph{case block} after another comparing their \emph{case values} with it.
+
+Therefore, if a particular case block has any \emph{pre-bound graph} we need to pop the \emph{switch value} first and then, after emitting its \emph{pre-bound graph}, load it again. To not to evaluate the \emph{switch value} multiple times, we also must replace it with a temporal variable. A temporal variable into which the \emph{switch value} is saved, or captured in other words, in the very beginning.
+
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_switchEdge}	
 	\caption{Switch edge diagram.}
 	\label{fig5.3:SwitchEdge}
 \end{figure}
-
-That itself is not that complicated. We can remember the whole case value bound bag in the case block and emit the \emph{pre-bound graph} directly before the case value condition. The issue is, that the evaluation stack is not guaranteed and actually never is empty at that point. Because only one case block can be taken in PHP switch, Peachpie actually keeps the \emph{switch value} on the evaluation stack from the beginning of a switch edge evaluation and goes one \emph{case block} after another comparing their \emph{case values} with it.
-
-Therefore, if a particular case block has any \emph{pre-bound graph} we need to pop the \emph{switch value} first and then, after emitting its \emph{pre-bound graph}, load it again. To not to evaluate the \emph{switch value} multiple times, we also must replace it with a temporal variable. A temporal variable into which the \emph{switch value} is saved, or captured in other words, in the very beginning.
 
 There are certain optimizations that can be done as part of this process. For example, we do not need to do the whole switch value saving if it is a constant. They are, however, implementation details. 
 
@@ -337,7 +337,7 @@ Now that all external components can handle bound bags with pre-bound blocks, it
 
 When the semantic binder is asked to bind an AST, be it an expression or a statement, it first of all prepares an empty \emph{first pre-bound block} for the item that will be bound. Then, it proceeds with binding the element, its children, and so on recursively as already described in the semantic graph chapter. And when any of these nodes is under any path between a \emph{yield} and the root of the currently bound expression tree, it creates its semantic representation but does not simply return it. Instead, the semantic binder constructs a new \emph{assignment statement} that sets the bound expression to a new temporal variable, puts said statement into the current \emph{pre-bound block}, and returns a \emph{read expression} from the temporal variable (\autoref{fig5.3:CaptureWithYield}). That way the read from the temporal variable ends up in the resulting expression tree instead of the bound expression and the bound expression becomes captured. And when the AST finishes binding it gets returned as part of the bound bag’s pre-bound graph.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_branchesWithYields}	
 	\caption{Capturing a branch with a yield.}
@@ -358,38 +358,127 @@ Capturing both a child node and its parent’s, which is something that happens 
 
 \subsection{Creating and keeping the pre-bound graph}
 
-\begin{figure}[h]
+Now that we are sure our modified version is still correct, let us go back and implement the two things we need for the algorithm to work. First, we will take a look at creating and keeping the pre-bound blocks while binding an AST.
+
+The keeping part is straightforward, we only need two new fields with references to bound blocks on the \emph{SemanticBinder}. Two because, as we have discussed before, we need both the first and the last block for the eventually returned \emph{bound bag}. The reference to the last bound block can also serve as the \emph{current pre-prebound block} into which new captured branches are added.
+
+The actually complicated part is getting new empty bound blocks. While the \emph{SemanticBinder} could just create brand new bound blocks instances itself, there is a small problem with the fact that bound blocks are in fact ordered. They all have an ordinal number that represents where - in comparison to other bound blocks - do they fit within the original source file. The higher their number the further the code they represent was in the original source code. For example imagine an if statement (\autoref{fig5.3:BlocksOrdinal}): the block before the if itself must have the smallest ordinal number, the true block higher, the else block higher still, and the block directly after the highest.
+
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_blockOrdinal}	
 	\caption{Ordinal number of bound blocks.}
 	\label{fig5.3:BlocksOrdinal}
 \end{figure}
 
+The problem is that the \emph{SemanticBinder} does not know the last ordinal number the \emph{BuilderVisitor} used to create its \emph{current bound block}. And so, it does not know what ordinal number to use for a new \emph{pre-bound block} that will represent the current statement’s or expression’s \emph{pre-bound graph}.
+
+It is true that the \emph{SemanticBinder} could create all these \emph{pre-bound blocks} with an ordinal number 0 and then the \emph{BuilderVisitor} could fix them as part of the phase that connects the \emph{pre-bound graph}. That would, however, require creating a new component that could traverse the graph and would know its topology. While the \emph{BuilderVisitor} knows how to create the semantic graph, it does not have generic tools to traverse it or to update its nodes’ ordinal numbers.
+
+It was also briefly considered to simply pass the last used ordinal number with each to call the \emph{SemanticBinder} and then return the new one as part of the \emph{bound bag}. This approach was not chosen in the end, however, because it breaks the abstraction separation between two relatively independent components.
+
+Thus, it was chosen to offload the creation of new bound blocks to the \emph{BuilderVisitor} instead. As part of an initialization phase, the \emph{SemanticBinder} takes a reference to the \emph{BuilderVIsitor} and, when needed, uses it to get new bound blocks with the correct ordinal number. The only requirement for this to work is to ensure following invariant stays true. When an element is being bound, the last block created by the builder visitor must be the block directly before the element. And as it turns out, this is an already existing invariant in the Peachpie compiler.
+
+With this approach, the \emph{SemanticBinder} can get a new empty bound block with the correct ordinal number without having to actually know or care about ordinal numbers. For now, this is relevant only for the one initial bound block that gets created in the beginning of a binding process, is used as the storage for all the captured branches, and in the end gets returned as part of the \emph{bound bag}. Later, it will become more important when conditioned branches come into play because they will require getting a number of bound blocks for the \emph{pre-bound graph}.
+
 \subsection{Path between the root and yields}
 
-\begin{figure}[h]
+To be able to tell whether an element is under a path between the root of the current expression tree and any \emph{yield}, we need to have the paths first. While it would be possible to simply traverse the full graph with a depth first search and record the path whenever we find a \emph{yield}, there is actually a simpler way. 
+
+As part of the AST the parser returns a list of references to all found \emph{yield expressions}. Due to that, we only need to go through this list, assign individual \emph{yield}s to their respective method symbols, and realize these paths. The first part of the process are trivial busywork and thus will not be discussed in detail. 
+
+Since the paths are needed before any node from a method is bound, the realization is best done as part of the method’s \emph{SemanticBinder}’s initialization. The realization itself is a two steps process. First, the abstract syntax nodes representing the \emph{yield}s must get into the \emph{SemanticBinder}. They can simply be passed there from the routine that creates the method’s CFG and thus also initiates its \emph{SemanticBinder}. 
+
+The second step is actually creating the paths. For that, it is useful to know that all syntax nodes have a generic reference to their parent node. Thus, it is quite easy to traverse the syntax graph upwards, which is all we need to do. We can start with every \emph{yield expression} and just go upwards in the graph until we get to a node representing the enclosing method, recording the path along the way. Do note that paths created this way are not the paths between a \emph{yield} and its expression tree’s root but a \emph{yield} and the method’s root. While it might look as a minor thing it will be important.
+
+Now that we have the paths for all \emph{yield}s within a method, let us take look at the mechanism to find out whether a node is under any of said paths. Just checking whether the parent of a currently bound abstract syntax node is within any recorded path is not enough. It is not enough precisely because the paths do not stop at expression tree roots but instead continue to the methods’ roots and as such include things like edges. 
+
+For example (\autoref{fig5.3:Path}), if a \emph{yield} was in a true branch of an \emph{if edge}, the path would also contain the \emph{if edge}’s syntax node. Therefore, the first node of the \emph{if edge}’s \emph{condition expression} would report as being under the path despite the fact it actually is not under the path we care about, the path between a yield and its expression tree’s root.
+
+Therefore, we need a more nuanced mechanism. A good observation to make is, that we know about each expression tree’s root. It is the node passed to the public \emph{SemanticBinder}’s methods that invoke the binding process of an AST, the \emph{BindWholeExpression} and \emph{BindWholeStatement}\footnote{Chapter \ref{BindMultiple}}. With this knowledge, and the fact that the binding process is essentially a depth first search, we can solve this issue through a new \emph{level} field on the \emph{SemanticBinder}. A \emph{level} field that represents how deep we are under the closest \emph{yield-root} path in the currently bound expression tree (\autoref{fig5.3:Path}).
+
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_path}	
 	\caption{Path between a yield and expression tree's root.}
 	\label{fig5.3:Path}
 \end{figure}
 
+When the \emph{SemanticBinder} starts binding an AST through any of its public methods, the \emph{level} is set to -1, representing that there is no known relevant path above. There cannot be one because at that point the current node, that is being bound, is the expression tree’s root. 
+
+Then, in the beginning of each of the methods that bind the tree’s individual nodes, \emph{BindStatement} and \emph{BindExpression}, the \emph{level} is saved to a local variable and the field is updated. The update consist of two operations. First, if the current \emph{level} is not $-1$, it is increased by one, indicating that we are one level deeper. Second, it is checked whether the current node’s parent is part of any path and when it is, the \emph{level} is set to $0$. 
+
+After setting the \emph{level}, a semantic representation of the node is created, and its children are bound, potentially also captured. Then, the current \emph{level} is checked. If it is $1$ or $0$, which means the node is either on the path or directly below it, the just bound node gets captured as described before\footnote{Chapter \ref{Capture}}, adding a statement that assigns it to a new temporal variable into the \emph{current pre-bound block}. Finally, the original \emph{level} is restored from a local variable and either the bound node or, if it was captured a read from its respective temporal variable, gets returned.
+
 \subsection{Conditioned branches}
 
-\begin{figure}[h]
+With that, we have all the building blocks needed to have an implementation that handles yields as expressions in every situation except for when the yield is in a conditioned branch. That means either a branch of a \emph{conditioned expression} or a short-circuit evaluated \emph{binary expression}.
+
+For a \emph{conditional expression} there are two \emph{conditioned branches} and one separate \emph{condition branch} that dictates which of the first two branches will get evaluated. For short circuit evaluated \emph{binary expressions} there only two children branches in total. A \emph{condition} one and a \emph{conditioned} one. The rule is that it the \emph{conditioned} is evaluated only if the first one, the \emph{condition} one, has not already satisfied the rule of the short circuit evaluation.  
+
+We have already discussed the theoretical approach to solving this problem\footnote{Chapter \ref{shortCircTheory}}. Its implementation is following. When binding an element with a conditioned branch, the branch is bound as a standalone expression tree. The result of the branch’s binding, its \emph{bound bag}, then used to determine whether the branch contains a \emph{yield} or not. The key is whether its \emph{pre-bound graph} is non-empty. When it does contain a \emph{yield}, said \emph{pre-bound graph} is connected to the \emph{last pre-bound block} of the currently bound expression tree through a \emph{condition branch}. A \emph{condition branch} that uses the same \emph{condition expression} that guards the branch (\autoref{fig5.3:YieldInCond}). This effectively ensures the the \emph{pre-bound blocks}, constituting the \emph{pre-bound graph}, of the branch are evaluated only when the branch is, in essence when its condition is true.
+ 
+The issue with multiple evaluations of the \emph{condition expression}, that can happen because now we have the condition both in the original expression and in the \emph{condition edge}, is solvable through a simple observation. When the \emph{conditioned branch} includes a \emph{yield}, the expression that the branch stems from must be on the path between it and the expression tree’s root. Therefore, the \emph{condition expression}, that starts from the same node the \emph{conditioned branch} does, is guaranteed to be directly under said path. 
+
+With that knowledge we can capture the \emph{condition expression} while binding the shared parent node and reuse its temporal variable in the both the expression’s condition, i.e. the original position, and the branch’s \emph{pre-bound graph}’s \emph{condition edge}. Since the \emph{condition expression} is guaranteed to be under the path, all expressions to the left from it has already been captured and prepended and so the order of execution stays correct.
+
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_yieldInCond}	
 	\caption{Capturing a yield in a conditioned branch.}
 	\label{fig5.3:YieldInCond}
 \end{figure}
 
+Now the only thing that remains to be described is the way to bind the branch as a standalone expression tree in the middle of binding its enclosing one. One possible way is to save both references to the \emph{pre-bound blocks} on the \emph{SemanticBinder} to local variables, initialize them to a default value, and proceed with binding the branch through normal means. When it is done, capture the branch’s \emph{pre-bound graph} from the now re-populated \emph{pre-bound block}s references, construct its bound bag, restore the \emph{pre-bound block}s references to their original values, and return the bag. That way the solution works even with nested conditioned branches.
+
 \subsection{Implementation remarks}
+
+In previous sections we have presented a high level discussion about the implementation of an algorithm that lowers generator methods using only relatively small modifications to a \emph{SemanticBinder} and a \emph{BuilderVisitor}. While they are more of implementation details, there are a few remarks that could be useful for the reader but do not fit into any previous chapter due to either being too specific or requiring knowledge about the system as a whole.
+
+Not all expressions need to be captured when the algorithm signals they should. Since the capture of non-yield branches only ensures the correct order of execution, it is redundant for expressions that have no side effects and whose value cannot change in time. While these properties are hard to prove for an arbitrary expression they are guaranteed to be true for two specific types of expressions: a \emph{constant expression}, such as a number literal, and an expression that has a constant value resolved by the compiler. Thus, branches consisting of only these types of expressions can be omitted from capturing. 
+
+To mitigate any possible performance penalties for non-generator methods and separate generators specific code, it is possible to have two semantic binders. One that serves as the basis and is used for all normal methods and the other that inherits from it and handles generator methods.
+
+The only change we need to make to the basic one, in comparison to the original pre-generators \emph{SemanticBinder}, is to create the new public methods for binding expressions and statements and make them return \emph{bound bag}s with empty \emph{pre-bound graphs}. In the generators specific \emph{SemanticBinder} we can override both these methods and the ones that bind the AST’s individual nodes and put all the generators specific logic there. 
+
+The question which \emph{SemanticBinder} to use for any particular method has a straightforward answer. Since a \emph{SemanticBinder} for a method is initiated only after the method’s AST has been created by the parser, it is already known whether the method contains any yields and as such if it is a generator method. With that knowledge we can simply create the appropriate \emph{SemanticBinder} and pass it to the method’s respective \emph{BuilderVisitor} to use. 
+
+There is obviously more to the implementation than described in the chapters above. To name a few, we have completely left out the changes required to make return type analysis work, complexities related to throwing into and rewinding generators, all logic associated with generator’s return value, or how Peachpie keeps the list of method’s yields to be able to construct the jump table in the beginning of a generator’s \emph{next} method. All of these are, however, details that might, and most probably will, change in near future as the Peachpie project matures. Thus they do not provide any value for a reader that might want to either understand why peachpie works a certain way or implement a similar feature. And for those that are interested in line by line explanation the source code, or at least the part implemented as part of this thesis, is commented in detail. 
+
 
 \section{Yield in exception handling blocks}
 
+Now that we have fully described the implementation of generators within the boundaries set in the introduction, let us briefly look at possible ways to expand them. Specifically, at dealing with with \emph{yield}s in exception handling blocks. Due to the extent of this thesis and the complexity of arbitrarily placed \emph{yield}s\footnote{\citep{CSharpYieldCatch, CSharpYieldFinally, CSharpYieldTry}} we will neither propose a full solution nor describe an actual implementation. Rather, the following chapter will outline a possible approach that might serve as a starting point for possible future work.
+
+The implementation described in previous chapters cannot handle yields in exception handling blocks itself because CIL does allow neither jumping into an exception handling block nor returning from it\footnote{Chapter \ref{CILExc}}. And the core principle of our approach is transforming yields into jump target labels and return statements.
+
+We also cannot take a direct inspiration from Roslyn. While C\# does not forbid \emph{yield}s in exception handling blocks completely, it allows them only in a very limited way that is not really useful to us. It would theoretically be possible to take a look at how Roslyn handles \emph{await}s in said blocks, because methods with \emph{await}s are also lowered to state machines \citep{CSAwait}, but that approach was deemed unnecessarily complex for our needs. However, anyone considering actually implementing our proposed solution should use it as a resource.
+
 \subsection{Yields and exception handling blocks in PHP}
 
+Before going into details, we need to define what \emph{yield}s in individual exception handling blocks even mean. A \emph{yield} in any of these blocks, be it \emph{try}, \emph{catch}, or \emph{finally}, has the same basics semantics. It returns from the function and serves as a possible continuation point for whenever the generator’s \emph{next} method is invoked again. Despite that, there are certain situations in which the \emph{yield} behaves abnormally.
+
+When there is a \emph{try} block but no appropriate \emph{catch} block and an exception is thrown, the exception is saved and does not actually truly appear until after a potential \emph{finally} block associated with the \emph{try} block finishes. And since the possible finally block can contain \emph{yield}s itself, it is possible for an exception to actually appear and crawl out of the generator’s \emph{next} method only after several advancements of the generator. 
+
+There is also a special behaviour associated with \emph{finally} blocks. When an execution of a generator stops in a block that has an unfinished \emph{finally} block associated, be in in a \emph{try}, \emph{catch}, of the \emph{finally} block itself, and the generator is about to be deleted by the GC, the \emph{finally} block still gets run. At that point, however, it cannot contain any further \emph{yield}s. If it does, a runtime error gets thrown.
+
 \subsection{Solution in Peachpie}
+
+The core idea of our proposed approach is, that we can effectively emulate the exception handling process without having to worry about the aforementioned limitations of the native one. This has some obvious drawbacks. Most importantly, it introduces a non-trivial performance hit for both a situation when an exception is thrown but also for when it is not. Depending on implementation details, the hit can either be a bit smaller or bigger but it will always be there when trying to emulate the process without using native primitives provided by the CLR.
+
+The emulation is based on three principles. The generator instance holds the information in which exception handling block the execution currently is. Both starts and ends of all exception handling blocks get transformed into specific series of statements that do two main things: keep the aforementioned information updated and they serve as labels for potential jumps. Last but not least, the whole transformed \emph{next} method is wrapped in one giant \emph{try} block with a \emph{catch} in the end. A \emph{catch} block that retrieves the information regarding which exception handling block the execution was last in and acts accordingly. 
+
+Since there is only one giant \emph{try} block, the whole already described implementation of the \emph{next} method can be in it. Therefore, it can contain both the initial jump table and the whole generator’s code including all \emph{yield}s. That means, there do not have to be any jumps into or from exception handling blocks, only within the big one. And regarding \emph{return}s, they can simply be replaced with the special instruction to leave a \emph{try} block and then a \emph{return}.
+
+All starts and ends of exception handling blocks must do one thing, update the information about the current exception handling block. In addition to that, the starts of \emph{catch} blocks must include a jump label, possible conditional jump to the next catch handler for filtering only the appropriate exception type, and an unsetting of a saved exception. More about the saved exception later. The starts of \emph{finally} blocks must contain a jump label as well, and the ends should close with a throw of a saved exception, if there is any.
+
+The one global catch block should do following. It should retrieve the exception handling block that was just being executed. If it was a \emph{try} block or a \emph{catch} block with associated \emph{finally} block, it should save the exception on the generator instance, otherwise it should just rethrow. Then, it should figure out where to jump next, in essence where to continue with the execution. If the last executed block was a \emph{try} block, it should jump either to its \emph{catch} block label or its \emph{finally} block label. If it was a \emph{catch} block, then to the \emph{finally} block label. Lastly, just before jumping it should update and correct the information about the current exception handling block, the execution is just leaving one, after all.
+
+To support the situation in which a generator object is going to be collected and its \emph{finally} blocks should run, the generator type can implement an explicit \emph{IDisposable} interface. Then in the dispose method, it can gather the exception handling blocks its execution stopped in and run all of their finally blocks. An explicit \emph{IDisposable} interface is required instead of just using CLI finalizers because of different GC semantics between the CLR and PHP \citep{GenPHPRFC, CSharpEcma}. 
+
+It is guaranteed that the finally blocks are triggered immediately after the last reference to the generator instance disappears in PHP. The same thing cannot be said for CLI. There is simply no way to get notified immediately after the last reference to an object disappears. Also, having arbitrary code in finalizers is highly discouraged. Since they can run in an arbitrary order it is possible that objects the generator instance might be pointing to, and that might be used by the code in the finally blocks, could have already been collected and their references set to null by the time generator’s finalizer runs. 
+
+The idea outlined above is in no way comprehensive and misses a number of important details that would need to be ironed out before implementing it. In spite of that, it should serve as a good starting point.
 
 \section{Future work}
 
