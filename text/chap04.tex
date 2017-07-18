@@ -8,7 +8,7 @@ IronPython and its compiler based on a DLR was also considered, mainly due to Py
 
 The second implementation we will talk about in this chapter is Zend Engine’s for generators in PHP. In spite of the fact that we cannot use it as an inspiration, because it relies on a native support provided by the runtime, it is useful to mention it at least briefly. Afterall, it is the implementation we are trying to mimic.
 
-\section{CSharp and Roslyn}\label{sec:3:1}
+\section{C\# and Roslyn}\label{sec:3:1}
 
 As said previously, the CIL, into which .NET implementation of C\# gets compiled, does not have a native understanding of generators. There is, for example, no instruction to yield or to automatically construct an iterator type instance with all the appropriate methods. Therefore, the Roslyn compiler has to support generators by lowering them, in essence transforming them into lower level language constructs. 
 
