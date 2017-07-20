@@ -1,0 +1,31 @@
+%% Settings for single-side (simplex) printing
+% Margins: left 40mm, right 25mm, top and bottom 25mm
+% (but beware, LaTeX adds 1in implicitly)
+\documentclass[12pt,a4paper]{report}
+\setlength\textwidth{145mm}
+\setlength\textheight{247mm}
+\setlength\oddsidemargin{15mm}
+\setlength\evensidemargin{15mm}
+\setlength\topmargin{0mm}
+\setlength\headsep{0mm}
+\setlength\headheight{0mm}
+% \openright makes the following text appear on a right-hand page
+\let\openright=\clearpage
+
+
+
+%% Generate PDF/A-2u
+\usepackage[a-2u]{pdfx}
+\usepackage[utf8]{inputenc}
+
+%% Prefer Latin Modern fonts
+\usepackage{lmodern}
+
+\begin{document}
+Cílem této práce je navrhnout a implementovat podporu pro generátory v rámci Peachpie projektu, kompilátoru z PHP do CIL. Generátory jsou nejjednodušší formou metod, které při opětovném zavolání pokračují ze stejného stavu, ve kterém dříve skončily. 
+
+Referenční interpretr jazyka PHP Zend Engine podporuje generátory nativně. Nejen kvůli tomu jsou generátory v PHP poměrně silné a umožňují například přerušení vykonávání prakticky na jakémkoliv místě. CIL naopak přímou podporu pro generátory nemá, jazyky nad ním postavené (např. C\# či F\#) je tedy musí implementovat kupříkladu přepisem generátorových metod na stavové automaty. 
+
+V práci rozebereme návrh a následnou implementaci generátorů pomocí transformace sémantického stromu a konkrétní CIL reprezentaci případných nových sémantických objektů s cílem zachovat maximální možnou kompatibilitu se sémantikou PHP generátorů. Také je srovnáme s generátory v jazyce C\#, jehož hlavní implementace je taktéž postavena nad CIL.
+
+\end{document}
