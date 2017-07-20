@@ -26,19 +26,16 @@ Other than that, the \emph{Generator} type can be practically the same as the on
 \caption{Simplified version of the Generator type.}
 \label{list5.1:GeneratorType}
 \begin{minted}{csharp}
-public delegate void GeneratorStateMachineDelegate(
-  Context ctx, object @this, PhpArray locals, 
-  Generator gen);
+public delegate void GeneratorStateMachineDelegate(Generator gen);
 public class Generator : Iterator
 {
-  readonly Context _ctx;
-  readonly GeneratorStateMachineDelegate _stateMachineMethod;
-  readonly object _this;
-  readonly PhpArray _locals;
+  internal readonly Context _ctx;
+  internal readonly GeneratorStateMachineDelegate _nextMethod;
+  internal readonly object _this;
+  internal readonly PhpArray _locals;
   internal int _state = 0;
   internal PhpValue _currValue, _currKey;
-  public void next() =>
-  _stateMachineMethod.Invoke(_ctx, _this, _locals, gen: this);
+  public void next() => _nextMethod.Invoke(this);
 }
 \end{minted}
 \end{listing}
@@ -57,18 +54,18 @@ With that, a \emph{PhpArray} field can be added to the generator type and we can
 
 \subsection{Accessibility of fields on the Generator type}
 
-Moving the \emph{next} method outside of the generator type means that the method cannot access its fields such as \emph{current} or state directly through a \emph{this} reference. That is a problem, because the method needs to both read and write these fields to progress the generator. An effective solution is to pass the generator instance as a parameter through the \emph{next} method delegate - in essence to not only call the delegate from within the generator’s own \emph{next} method, but to call it with a \emph{this} reference as a parameter.
+Moving the \emph{next} method outside of the generator type means that the method cannot access its fields such as \emph{current} or \emph{state} directly through the \emph{this} reference. That is a problem, because the method needs to both read and write these fields to progress the generator. An effective solution is to pass the generator instance as a parameter through the \emph{next} method delegate - in essence to not only call the delegate from within the generator’s own \emph{next} method, but to call it with a \emph{this} reference as a parameter.
 
 That on its own would be enough if all the fields on the generator type were public. That is, however, not our objective. We want the generator type to have the same public API as it does in PHP and there are no such public fields in PHP’s \emph{Generator}. Therefore, we need to find a way to access the fields from a method within the user’s assembly, the transformed \emph{next} method the generator has a delegate to, without having to make the fields accessible to other user code.
 
-One way to do this is to make the generator fields internal and create public getter and setter methods for these fields in the Runtime library. Since the generator type also lives there, the methods can access its fields and, because they are public, they can be used from within the synthesized \emph{next} method (\autoref{fig5.1:Generator}). The methods can be simple static getters and setters, always taking a generator instance as a first parameter and either returning an appropriate field’s value or taking its value as a second parameter and then setting it on the instance.
-
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.70]{../img/5_1_Generator}	
 	\caption{Transformation of the generator method.}
 	\label{fig5.1:Generator}
 \end{figure}
+
+One way to do this is to make the generator fields internal and create public getter and setter methods for these fields in the Runtime library. Since the generator type also lives there, the methods can access its fields and, because they are public, they can be used from within the synthesized \emph{next} method (\autoref{fig5.1:Generator}). The methods can be simple static getters and setters, always taking a generator instance as a first parameter and either returning an appropriate field’s value or taking its value as a second parameter and then setting it on the instance.
 
 While it is true that this approach still opens a way for the user to modify the generator’s internal state, it has to be done through special methods from Peachpie runtime library and as such, it can hardly be done by accident. It also ensures a compliant public API of the \emph{Generator} type.
 
@@ -273,7 +270,7 @@ To enable returning a full subgraph, we need a container for the bound element a
 \begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_BoundBag}	
-	\caption{Bound bag.}
+	\caption{Bound bag diagram.}
 	\label{fig5.3:BoundBag}
 \end{figure}
 
@@ -335,7 +332,9 @@ There are certain optimizations that can be done as part of this process. For ex
 
 Now that all external components can handle bound bags with pre-bound blocks, it is time to actually implement the algorithm that creates them. The implementation is based on one core principle. 
 
-When the semantic binder is asked to bind an AST, be it an expression or a statement, it first of all prepares an empty \emph{first pre-bound block} for the item that will be bound. Then, it proceeds with binding the element, its children, and so on recursively as already described in the semantic graph chapter. And when any of these nodes is under any path between a \emph{yield} and the root of the currently bound expression tree, it creates its semantic representation but does not simply return it. Instead, the semantic binder constructs a new \emph{assignment statement} that sets the bound expression to a new temporal variable, puts said statement into the current \emph{pre-bound block}, and returns a \emph{read expression} from the temporal variable (\autoref{fig5.3:CaptureWithYield}). That way the read from the temporal variable ends up in the resulting expression tree instead of the bound expression and the bound expression becomes captured. And when the AST finishes binding it gets returned as part of the bound bag’s pre-bound graph.
+When the semantic binder is asked to bind an AST, be it an expression or a statement, it first of all prepares an empty \emph{first pre-bound block} for the item that will be bound. Then, it proceeds with binding the element, its children, and so on recursively as already described in the semantic graph chapter. And when any of these nodes is under any path between a \emph{yield} and the root of the currently bound expression tree, it creates its semantic representation but does not simply return it. Instead, the semantic binder constructs a new \emph{assignment statement} that sets the bound expression to a new temporal variable, puts said statement into the current \emph{pre-bound block}, and returns a \emph{read expression} from the temporal variable (\autoref{fig5.3:CaptureWithYield}). That way the read from the temporal variable ends up in the resulting expression tree instead of the bound expression and the bound expression becomes captured. And when the AST finishes binding, it gets returned as part of the bound bag’s \emph{pre-bound graph}.
+
+Two things are needed to support such behavior, the ability to determine whether any particular node is under a path between the current expression tree’s root a \emph{yield} and a way to keep \emph{pre-bound blocks} while an expression tree for an AST is being binded. Before going into details on implementing each of these, however, let us first take a look at a small modification we have made to the algorithm in comparison to the one described in a previous chapter\footnote{Chapter \ref{AlghTheory}}.
 
 \begin{figure}[H]
 	\centering	
@@ -343,8 +342,6 @@ When the semantic binder is asked to bind an AST, be it an expression or a state
 	\caption{Capturing a branch with a yield.}
 	\label{fig5.3:CaptureWithYield}
 \end{figure}
-
-Two things are needed to support such behavior, the ability to determine whether any particular node is under a path between the current expression tree’s root a \emph{yield} and a way to keep \emph{pre-bound blocks} while an expression tree for an AST is being binded. Before going into details on implementing each of these, however, let us first take a look at a small modification we have made to the algorithm in comparison to the one described in a previous chapter\footnote{Chapter \ref{AlghTheory}}.
 
 \subsection{Correctness of modified capturing algorithm}
 
@@ -367,7 +364,7 @@ The actually complicated part is getting new empty bound blocks. While the \emph
 \begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_blockOrdinal}	
-	\caption{Ordinal number of bound blocks.}
+	\caption{Ordinal numbers of bound blocks.}
 	\label{fig5.3:BlocksOrdinal}
 \end{figure}
 
@@ -400,7 +397,7 @@ Therefore, we need a more nuanced mechanism. A good observation to make is, that
 \begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_path}	
-	\caption{Path between a yield and expression tree's root.}
+	\caption{Path between a yield and an expression tree's root.}
 	\label{fig5.3:Path}
 \end{figure}
 
@@ -422,14 +419,14 @@ The issue with multiple evaluations of the \emph{condition expression}, that can
 
 With that knowledge we can capture the \emph{condition expression} while binding the shared parent node and reuse its temporal variable in the both the expression’s condition, i.e. the original position, and the branch’s \emph{pre-bound graph}’s \emph{condition edge}. Since the \emph{condition expression} is guaranteed to be under the path, all expressions to the left from it has already been captured and prepended and so the order of execution stays correct.
 
+Now the only thing that remains to be described is the way to bind the branch as a standalone expression tree in the middle of binding its enclosing one. One possible way is to save both references to the \emph{pre-bound blocks} on the \emph{SemanticBinder} to local variables, initialize them to a default value, and proceed with binding the branch through normal means. When it is done, capture the branch’s \emph{pre-bound graph} from the now re-populated \emph{pre-bound block}s references, construct its bound bag, restore the \emph{pre-bound block}s references to their original values, and return the bag. That way the solution works even with nested conditioned branches.
+
 \begin{figure}[H]
 	\centering	
 	\includegraphics[scale=0.75]{../img/5_3_yieldInCond}	
 	\caption{Capturing a yield in a conditioned branch.}
 	\label{fig5.3:YieldInCond}
 \end{figure}
-
-Now the only thing that remains to be described is the way to bind the branch as a standalone expression tree in the middle of binding its enclosing one. One possible way is to save both references to the \emph{pre-bound blocks} on the \emph{SemanticBinder} to local variables, initialize them to a default value, and proceed with binding the branch through normal means. When it is done, capture the branch’s \emph{pre-bound graph} from the now re-populated \emph{pre-bound block}s references, construct its bound bag, restore the \emph{pre-bound block}s references to their original values, and return the bag. That way the solution works even with nested conditioned branches.
 
 \subsection{Implementation remarks}
 

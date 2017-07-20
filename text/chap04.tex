@@ -54,7 +54,7 @@ That can be done similarly as the this reference was handled in the original gen
 
 \subsection{Execution position}
 
-The last thing that needs to be taken care of is saving the point where the last yield happened, effectively the place a subsequent call of the \emph{next} method should continue from. To handle that, the rewriter does two main things. It replaces each \emph{yield} with a number of statements and creates a jump table in the beginning of the \emph{next} method (\autoref{fig4.1:Position}). A new field called state, representing which yield the generator exited with last time, is also created on the iterator instance.
+The last thing that needs to be taken care of is saving the point where the last yield happened, effectively the place a subsequent call of the \emph{next} method should continue from. To handle that, the rewriter does two main things. It replaces each \emph{yield} with a number of statements and creates a jump table in the beginning of the \emph{next} method (\autoref{fig4.1:Position}, \autoref{list4.1:generatorRewrite}). A new field called state, representing which yield the generator exited with last time, is also created on the iterator instance.
 
 Each \emph{yield} gets lowered into four separate statements. First, an assignment of the yielded value to a current field on the iterator instance. This field is used by the \emph{IEnumerator}'s \emph{current} method as its backing field. Second, an assignment of the current \emph{yield}’s index to a state field on the iterator instance. The order of these indexes can be arbitrary, only a uniqueness among other \emph{yield}s' indexes within the same method is required. Third, a normal \emph{return} from the \emph{next} method. And finally, a \emph{yield}’s label based on its index that can be used as a target for jumps.
 
@@ -63,43 +63,43 @@ The jump table in the beginning of the \emph{next} method is fundamentally a swi
 \begin{figure}[h]
 	\centering	
 	\includegraphics[scale=0.75]{../img/4_1_position}	
-	\caption{Local variables rewrite for generator methods.}
+	\caption{Rewrite of a yield statement.}
 	\label{fig4.1:Position}
 \end{figure}
+
+\begin{listing}[H]
+	\caption{Original and rewritten generator method's body.}
+	\label{list4.1:generatorRewrite}
+	\begin{minted}{csharp}
+	// Original method's body
+	Yield 5;
+	Yield 10;
+	
+	// New method's body
+	switch(this.state){  // Jump table.
+	case 1:            // If state represents 1st yield.
+	goto: Label_1;   // Jump to label for 1st yield.
+	break;
+	case 2:            // If state represents 2nd yield.
+	goto: Label_2;   // Jump to label for 2nd yield.
+	break;
+	}
+	
+	this.current = 5;    // Set yielded item as current.
+	this.state = 1;      // Set state for 2nd yield.
+	return;
+	Label_1;             // Label for 1st yield.
+	
+	this.current = 10;   // Set yielded item as current.
+	this.state = 2;      // Set state for 2nd yield.
+	return;
+	Label_2;             // Label for 2nd yield.
+	\end{minted}
+\end{listing}
 
 That way when the \emph{next} method is called repeatedly, it always resumes with the statement that is directly after the \emph{return} the method exited with before. This happens simply due to the fact that whenever you hit a \emph{yield}, and therefore a \emph{return}, two things are true. 
 
 First, just before returning from the \emph{next} method, an index of the hit \emph{yield} gets assigned to the state field. Second, the state field does not change unless the \emph{next} method is called again. And when that happens, the switch table in the beginning of the \emph{next} method jumps to the label that was created by rewriting the same \emph{yield} as the last evaluated state assignment. Which is, as we have already proven, the label directly after the \emph{return} the method exited with previously.
-
-\begin{listing}[H]
-\caption{Original and rewritten generator method's body.}
-\label{list4.1:generatorRewrite}
-\begin{minted}{csharp}
-// Original method's body
-Yield 5;
-Yield 10;
-
-// New method's body
-switch(this.state){  // Jump table.
-  case 1:            // If state represents 1st yield.
-    goto: Label_1;   // Jump to label for 1st yield.
-    break;
-  case 2:            // If state represents 2nd yield.
-    goto: Label_2;   // Jump to label for 2nd yield.
-    break;
-}
-
-this.current = 5;    // Set yielded item as current.
-this.state = 1;      // Set state for 2nd yield.
-return;
-Label_1;             // Label for 1st yield.
-
-this.current = 10;   // Set yielded item as current.
-this.state = 2;      // Set state for 2nd yield.
-return;
-Label_2;             // Label for 2nd yield.
-\end{minted}
-\end{listing}
 
 Naturally, this is not all the Roslyn compiler does to support generators in C\#. It is, however, more than enough for us to design our own implementation in the Peachpie compiler. 
 
