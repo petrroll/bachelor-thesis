@@ -1,7 +1,7 @@
 % Metadata to be stored in PDF, see documentation of the pdfx package for more details.
 
-\Author{Name Surname}
-\Title{Thesis title}
-\Keywords{keywords\sep more such\sep yet another}
-\Subject{Abstract of thesis}
+\Author{Petr Houška}
+\Title{Compilation of a dynamic language Generators into MSIL}
+\Keywords{compiler\sep php\sep msil\sep .net\sep generators\sep roslyn\sep peachpie}
+\Subject{The goal of this thesis is to design and implement the support for generators within the Peachpie framework, a PHP to CIL compiler. Generators are the simplest form of methods that resume from the same state in which they returned earlier when called repeatedly. The reference PHP interpreter Zend engine supports generators natively. Due to that fact that generators in PHP support a number of features that are not common in other languages. CIL, on the other hand, does not have a native support for generators. Therefore, languages built on top of CIL (e.g. C\#, F\#) have to implement them by other means, such as by rewriting the original generator methods into state machines. In this thesis, we will design and implement the support for generators through semantic tree transformations. All this is handled with the intention of keeping the maximum possible compatibility with reference PHP generators. We will also make a comparison to generators in C\#, whose main implementation also uses CIL as a backend.}
 \Publisher{Charles University}
