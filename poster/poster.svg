@@ -4257,12 +4257,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.0979446"
-     inkscape:cx="694.6449"
-     inkscape:cy="505.83754"
+     inkscape:zoom="0.25"
+     inkscape:cx="524.651"
+     inkscape:cy="943.09654"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      inkscape:window-width="1916"
      inkscape:window-height="1137"
      inkscape:window-x="-8"
@@ -4303,6 +4303,11 @@
        orientation="0,1"
        id="guide21739"
        inkscape:locked="false" />
+    <sodipodi:guide
+       position="-448.96893,227.22208"
+       orientation="1,0"
+       id="guide8878"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -4312,7 +4317,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -13919,63 +13924,59 @@
          y="16.313307"
          style="stroke-width:0.26458332"
          id="tspan13463-2-0-2-7-5" /></text>
-    <g
-       id="g11539"
-       transform="translate(2.0319181,-3.3569336e-6)">
-      <rect
-         rx="5"
-         ry="5"
-         y="23.76"
-         x="298.55499"
-         height="77.220001"
-         width="210.24998"
-         id="rect13347-8-7-3-9-8-4"
-         style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.2513926;stroke-opacity:1" />
-      <text
-         transform="scale(0.98848035,1.0116539)"
-         id="text13317-9-72-9-2-4-90"
-         y="40.099369"
-         x="329.71552"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.13067055px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
-         xml:space="preserve"><tspan
-           style="text-align:start;text-anchor:start;stroke-width:0.26766673"
-           y="40.099369"
-           x="329.71552"
-           id="tspan13315-2-2-5-2-8-6"
-           sodipodi:role="line">Generator method</tspan></text>
-      <text
-         transform="scale(0.98848035,1.0116539)"
-         id="text13327-2-6-5-6-8-0"
-         y="53.514683"
-         x="316.20145"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.85155821px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
-         xml:space="preserve"><tspan
-           id="tspan21798"
-           style="stroke-width:0.26766673"
-           y="53.514683"
-           x="316.20145"
-           sodipodi:role="line">function by_one_generator(){ </tspan><tspan
-           id="tspan21800"
-           style="stroke-width:0.26766673"
-           y="63.329132"
-           x="316.20145"
-           sodipodi:role="line">  for($i = 0; $i &lt; 10; $i++){ </tspan><tspan
-           id="tspan21802"
-           style="stroke-width:0.26766673"
-           y="73.143578"
-           x="316.20145"
-           sodipodi:role="line">    yield $i; </tspan><tspan
-           id="tspan21804"
-           style="stroke-width:0.26766673"
-           y="82.958023"
-           x="316.20145"
-           sodipodi:role="line">  } </tspan><tspan
-           id="tspan21806"
-           style="stroke-width:0.26766673"
-           y="92.772476"
-           x="316.20145"
-           sodipodi:role="line">}</tspan></text>
-    </g>
+    <rect
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.2513926;stroke-opacity:1"
+       id="rect13347-8-7-3-9-8-4"
+       width="210.24998"
+       height="77.220001"
+       x="300.58691"
+       y="23.759996"
+       ry="5"
+       rx="5" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.13067055px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
+       x="318.38779"
+       y="40.622437"
+       id="text13317-9-72-9-2-4-90"
+       transform="scale(0.98848035,1.0116539)"><tspan
+         sodipodi:role="line"
+         id="tspan13315-2-2-5-2-8-6"
+         x="318.38779"
+         y="40.622437"
+         style="text-align:start;text-anchor:start;stroke-width:0.26766673">Generator method</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.85155821px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
+       x="319.5668"
+       y="53.594406"
+       id="text13327-2-6-5-6-8-0"
+       transform="scale(0.98848035,1.0116539)"><tspan
+         sodipodi:role="line"
+         x="319.5668"
+         y="53.594406"
+         style="stroke-width:0.26766673"
+         id="tspan21798">function by_one_generator(){ </tspan><tspan
+         sodipodi:role="line"
+         x="319.5668"
+         y="63.408855"
+         style="stroke-width:0.26766673"
+         id="tspan21800">  for($i = 0; $i &lt; 10; $i++){ </tspan><tspan
+         sodipodi:role="line"
+         x="319.5668"
+         y="73.223305"
+         style="stroke-width:0.26766673"
+         id="tspan21802">    yield $i; </tspan><tspan
+         sodipodi:role="line"
+         x="319.5668"
+         y="83.03775"
+         style="stroke-width:0.26766673"
+         id="tspan21804">  } </tspan><tspan
+         sodipodi:role="line"
+         x="319.5668"
+         y="92.852196"
+         style="stroke-width:0.26766673"
+         id="tspan21806">}</tspan></text>
     <rect
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.35751823;stroke-opacity:1"
        id="rect13347-8-7-3-9-4"
@@ -15030,13 +15031,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93333244px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="349.45074"
-       y="129.23311"
+       x="315.4006"
+       y="130.35564"
        id="text13317-9-72-9-2-0-5"><tspan
          sodipodi:role="line"
          id="tspan13315-2-2-5-2-8-7"
-         x="349.45074"
-         y="129.23311"
+         x="315.4006"
+         y="130.35564"
          style="text-align:start;text-anchor:start;stroke-width:0.26458332">Yield splitting</tspan></text>
     <rect
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.56785285;stroke-opacity:1"
@@ -15050,13 +15051,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93333244px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="556.80414"
-       y="1.5036834"
+       x="549.13892"
+       y="1.3333454"
        id="text13317-9-72-9-2-0-5-4"><tspan
          sodipodi:role="line"
          id="tspan13315-2-2-5-2-8-7-0"
-         x="556.80414"
-         y="1.5036834"
+         x="549.13892"
+         y="1.3333454"
          style="text-align:start;text-anchor:start;stroke-width:0.26458332">Semantic tree transformation</tspan></text>
     <g
        transform="matrix(0.41892359,0,0,-0.41892359,586.36446,275.94892)"
