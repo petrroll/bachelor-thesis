@@ -4257,9 +4257,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.25"
-     inkscape:cx="524.651"
-     inkscape:cy="943.09654"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="1192.4499"
+     inkscape:cy="1198.0824"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -4317,7 +4317,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -12891,7 +12891,7 @@
       </g>
     </g>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.25325438;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8"
        width="252.17123"
        height="65.340004"
@@ -12937,7 +12937,7 @@
          style="stroke-width:0.26458332"
          id="tspan13463">- No concept of generators or execution state saving </tspan></text>
     <rect
-       style="opacity:0.98000004;fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.46122718;stroke-opacity:1"
+       style="opacity:0.98000004;fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13469"
        width="840.75146"
        height="27.909584"
@@ -12965,7 +12965,7 @@
          y="-206.0274"
          style="font-size:10.58333302px;text-align:center;text-anchor:middle;stroke-width:0.26458332">Petr Houška | Mgr. Jakub Míšek | Department of Software engeneering | github.com/peachpiecompiler/peachpie | github.com/petrroll/bachelor-thesis</tspan></text>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.21938083;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-6"
        width="189.2253"
        height="65.339958"
@@ -13023,7 +13023,7 @@
        inkscape:connector-curvature="0" />
     <rect
        rx="5"
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.21930605;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8-9"
        width="189.09622"
        height="65.340012"
@@ -13068,7 +13068,7 @@
          style="stroke-width:0.26458332"
          id="tspan14308">- Written in C#, .NET foundation member</tspan></text>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.28576994;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8-7-3-9"
        width="252.29689"
        height="83.153755"
@@ -13809,7 +13809,7 @@
       </g>
     </g>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.41136754;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8-7-3-9-8-3"
        width="281.5054"
        height="154.43086"
@@ -13925,7 +13925,7 @@
          style="stroke-width:0.26458332"
          id="tspan13463-2-0-2-7-5" /></text>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.2513926;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8-7-3-9-8-4"
        width="210.24998"
        height="77.220001"
@@ -13978,7 +13978,7 @@
          style="stroke-width:0.26766673"
          id="tspan21806">}</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.35751823;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8-7-3-9-4"
        width="252.29224"
        height="130.15273"
@@ -15020,7 +15020,7 @@
       </g>
     </g>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.36838332;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8-7-3-9-4-1"
        width="210.24838"
        height="165.81662"
@@ -15040,7 +15040,7 @@
          y="130.35564"
          style="text-align:start;text-anchor:start;stroke-width:0.26458332">Yield splitting</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.56785285;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect13347-8-7-3-9-4-1-9"
        width="281.73502"
        height="294.03"
