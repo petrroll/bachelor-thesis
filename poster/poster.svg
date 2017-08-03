@@ -4257,9 +4257,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.30014715"
-     inkscape:cx="1322.7404"
-     inkscape:cy="1186.1214"
+     inkscape:zoom="0.32394442"
+     inkscape:cx="1034.1252"
+     inkscape:cy="1184.5818"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -4312,7 +4312,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -10590,7 +10590,7 @@
          y="-102.1397"
          style="stroke-width:0.26458332" /></text>
     <g
-       transform="matrix(0.44097221,0,0,-0.44097221,246.5219,8.9926873)"
+       transform="matrix(0.44097221,0,0,-0.44097221,245.65585,8.9926873)"
        inkscape:label="5_1_Generator"
        id="g18590">
       <g
@@ -12886,10 +12886,10 @@
       </g>
     </g>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.26113576;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.25325438;stroke-opacity:1"
        id="rect13347-8"
-       width="226.94122"
-       height="77.193382"
+       width="252.17123"
+       height="65.340004"
        x="25.358776"
        y="-23.76"
        ry="5"
@@ -12915,25 +12915,20 @@
          x="32.993801"
          y="5.9133577"
          style="stroke-width:0.26458332"
-         id="tspan13333-8">- Intermediate language for .NET platform</tspan><tspan
+         id="tspan13333-8">- Intermediate language for .NET platform (C#, F#, ...)</tspan><tspan
          sodipodi:role="line"
          x="32.993801"
-         y="15.614746"
+         y="15.614747"
          style="stroke-width:0.26458332"
-         id="tspan13457">- High level stack based assembler</tspan><tspan
+         id="tspan13459">- High level, stack based, object oriented assembler</tspan><tspan
          sodipodi:role="line"
          x="32.993801"
          y="25.316135"
          style="stroke-width:0.26458332"
-         id="tspan13459">- Strongly typed, object oriented</tspan><tspan
-         sodipodi:role="line"
-         x="32.993801"
-         y="35.017529"
-         style="stroke-width:0.26458332"
          id="tspan13461">- Native understanding of exception handling</tspan><tspan
          sodipodi:role="line"
          x="32.993801"
-         y="44.718914"
+         y="35.017525"
          style="stroke-width:0.26458332"
          id="tspan13463">- No concept of generators or execution state saving </tspan></text>
     <rect
@@ -12965,9 +12960,9 @@
          y="-206.0274"
          style="font-size:10.58333302px;text-align:center;text-anchor:middle;stroke-width:0.26458332">Petr Houška | Mgr. Jakub Míšek | Department of Software engeneering | github.com/peachpiecompiler/peachpie | github.com/petrroll/bachelor-thesis</tspan></text>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.21194202;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.21938083;stroke-opacity:1"
        id="rect13347-6"
-       width="176.61029"
+       width="189.2253"
        height="65.339958"
        x="25.22971"
        y="-178.2"
@@ -13023,9 +13018,9 @@
        inkscape:connector-curvature="0" />
     <rect
        rx="5"
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.21186462;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.21930605;stroke-opacity:1"
        id="rect13347-8-9"
-       width="176.48122"
+       width="189.09622"
        height="65.340012"
        x="25.358784"
        y="-100.98"
@@ -13068,65 +13063,67 @@
          style="stroke-width:0.26458332"
          id="tspan14308">- Written in C#, .NET foundation member</tspan></text>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.27104011;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.28576994;stroke-opacity:1"
        id="rect13347-8-7-3-9"
-       width="226.94122"
-       height="83.160004"
-       x="25.358776"
-       y="65.339996"
+       width="252.29689"
+       height="83.153755"
+       x="25.233122"
+       y="53.463123"
        ry="5"
        rx="5" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93333244px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="38.649147"
-       y="81.752625"
+       x="38.52037"
+       y="69.872627"
        id="text13317-9-72-9-2"><tspan
          sodipodi:role="line"
          id="tspan13315-2-2-5-2"
-         x="38.649147"
-         y="81.752625"
+         x="38.52037"
+         y="69.872627"
          style="text-align:start;text-anchor:start;stroke-width:0.26458332">Generators</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111126px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="32.993786"
-       y="95.013359"
+       x="32.865009"
+       y="83.133362"
        id="text13327-2-6-5-6"><tspan
          sodipodi:role="line"
-         x="32.993786"
-         y="95.013359"
+         x="32.865009"
+         y="83.133362"
          style="stroke-width:0.26458332"
          id="tspan13463-2-0-2">- Contain a sequential alghoritm, return an Iterator</tspan><tspan
          sodipodi:role="line"
-         x="32.993786"
-         y="104.71474"
+         x="32.865009"
+         y="92.834747"
          style="stroke-width:0.26458332"
-         id="tspan14566">- Natively supported by the reference PHP runtime</tspan><tspan
+         id="tspan14566">- Natively supported by the reference PHP runtime (Zend)</tspan><tspan
          sodipodi:role="line"
-         x="32.993786"
-         y="114.41614"
+         x="32.865009"
+         y="102.53614"
          style="stroke-width:0.26458332"
-         id="tspan14568">- Lowered by compilers in .NET languages</tspan><tspan
+         id="tspan14568">- Lowered by compilers in .NET languages (e.g. Roslyn)</tspan><tspan
          sodipodi:role="line"
-         x="32.993786"
-         y="124.11752"
+         x="32.865009"
+         y="112.23753"
          style="stroke-width:0.26458332"
          id="tspan14570">- Execution pauses at <tspan
    style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
-   id="tspan14572">yield</tspan> keyword</tspan><tspan
+   id="tspan14572">yield</tspan> keyword, continues on <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic'"
+   id="tspan11528">next()</tspan> call</tspan><tspan
          sodipodi:role="line"
-         x="32.993786"
-         y="133.81891"
+         x="32.865009"
+         y="121.93892"
          style="stroke-width:0.26458332"
          id="tspan14574">  - Statement in most .NET languages (C#, F#)</tspan><tspan
          sodipodi:role="line"
-         x="32.993786"
-         y="143.52031"
+         x="32.865009"
+         y="131.6403"
          style="stroke-width:0.26458332"
          id="tspan14576">  - Value carying expression in PHP</tspan></text>
     <g
-       transform="matrix(0.52916665,0,0,-0.52916666,33.64,279.8)"
+       transform="matrix(0.52916665,0,0,-0.52916666,32.114367,272.8675)"
        inkscape:label="1_2_generators"
        id="g14594">
       <g
@@ -13807,196 +13804,200 @@
       </g>
     </g>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.40222821;stroke-opacity:1"
+       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.41136754;stroke-opacity:1"
        id="rect13347-8-7-3-9-8-3"
-       width="269.12003"
-       height="154.44"
-       x="546.65002"
-       y="-178.2"
+       width="281.5054"
+       height="154.43086"
+       x="534.03955"
+       y="-178.19543"
        ry="5.0000005"
        rx="5" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93333244px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="561.61365"
+       x="548.9986"
        y="-161.87108"
        id="text13317-9-72-9-2-4-9"><tspan
          sodipodi:role="line"
          id="tspan13315-2-2-5-2-8-4"
-         x="561.61365"
+         x="548.9986"
          y="-161.87108"
          style="text-align:start;text-anchor:start;stroke-width:0.26458332">Solution</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111126px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="555.95831"
+       x="543.34326"
        y="-148.61031"
        id="text13327-2-6-5-6-8-6"><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-148.61031"
          style="stroke-width:0.26458332"
          id="tspan13333-8-5-2-8-1-0">- New Generator type representing the returned Iterator</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-138.90892"
          style="stroke-width:0.26458332"
          id="tspan21686">- Changes to the original generator method's body: </tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-129.20753"
          style="stroke-width:0.26458332"
          id="tspan21697">  - Transformed to Generator's state machine as a new method</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-119.50614"
          style="stroke-width:0.26458332"
          id="tspan21699">  - Replaced with code that initiates and returns the Generator</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-109.80475"
          style="stroke-width:0.26458332"
          id="tspan21701">- State machine transformations:</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-100.10336"
          style="stroke-width:0.26458332"
          id="tspan21705">  - Local variables lifted to Generator instance</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-90.40197"
          style="stroke-width:0.26458332"
          id="tspan21709">  - Exlicit state saving on each yield</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-80.700584"
          style="stroke-width:0.26458332"
          id="tspan21713">  - State backed jump table in the beginning</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
+         x="543.34326"
          y="-70.999191"
          style="stroke-width:0.26458332"
          id="tspan21723">- Semantic tree transformation to lower yields:</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="-61.297806"
+         x="543.34326"
+         y="-61.29781"
          style="stroke-width:0.26458332"
          id="tspan21725">  - Moves yields under expression trees' roots</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="-51.596416"
+         x="543.34326"
+         y="-51.59642"
          style="stroke-width:0.26458332"
          id="tspan21727">  - Handles conditioned branches with yields</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="-41.895027"
+         x="543.34326"
+         y="-41.895031"
          style="stroke-width:0.26458332"
          id="tspan21729">  - Maintains the original order of execution</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="-32.193638"
+         x="543.34326"
+         y="-32.193642"
          style="stroke-width:0.26458332"
          id="tspan21719">  - Splitting yield into a statement and an expression</tspan><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="-22.492249"
+         x="543.34326"
+         y="-22.49225"
          style="stroke-width:0.26458332"
          id="tspan21733" /><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="-12.790858"
+         x="543.34326"
+         y="-12.790861"
          style="stroke-width:0.26458332"
          id="tspan21721" /><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="-3.0894697"
+         x="543.34326"
+         y="-3.0894725"
          style="stroke-width:0.26458332"
          id="tspan21715" /><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="6.6119194"
+         x="543.34326"
+         y="6.6119165"
          style="stroke-width:0.26458332"
          id="tspan21703" /><tspan
          sodipodi:role="line"
-         x="555.95831"
-         y="16.313309"
+         x="543.34326"
+         y="16.313307"
          style="stroke-width:0.26458332"
          id="tspan13463-2-0-2-7-5" /></text>
+    <g
+       id="g11539"
+       transform="translate(2.0319181,-3.3569336e-6)">
+      <rect
+         rx="5"
+         ry="5"
+         y="23.76"
+         x="298.55499"
+         height="77.220001"
+         width="210.24998"
+         id="rect13347-8-7-3-9-8-4"
+         style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.2513926;stroke-opacity:1" />
+      <text
+         transform="scale(0.98848035,1.0116539)"
+         id="text13317-9-72-9-2-4-90"
+         y="40.099369"
+         x="329.71552"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.13067055px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
+         xml:space="preserve"><tspan
+           style="text-align:start;text-anchor:start;stroke-width:0.26766673"
+           y="40.099369"
+           x="329.71552"
+           id="tspan13315-2-2-5-2-8-6"
+           sodipodi:role="line">Generator method</tspan></text>
+      <text
+         transform="scale(0.98848035,1.0116539)"
+         id="text13327-2-6-5-6-8-0"
+         y="53.514683"
+         x="316.20145"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.85155821px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
+         xml:space="preserve"><tspan
+           id="tspan21798"
+           style="stroke-width:0.26766673"
+           y="53.514683"
+           x="316.20145"
+           sodipodi:role="line">function by_one_generator(){ </tspan><tspan
+           id="tspan21800"
+           style="stroke-width:0.26766673"
+           y="63.329132"
+           x="316.20145"
+           sodipodi:role="line">  for($i = 0; $i &lt; 10; $i++){ </tspan><tspan
+           id="tspan21802"
+           style="stroke-width:0.26766673"
+           y="73.143578"
+           x="316.20145"
+           sodipodi:role="line">    yield $i; </tspan><tspan
+           id="tspan21804"
+           style="stroke-width:0.26766673"
+           y="82.958023"
+           x="316.20145"
+           sodipodi:role="line">  } </tspan><tspan
+           id="tspan21806"
+           style="stroke-width:0.26766673"
+           y="92.772476"
+           x="316.20145"
+           sodipodi:role="line">}</tspan></text>
+    </g>
     <rect
-       style="fill:#e66526;fill-opacity:0.49803922;stroke:#000000;stroke-width:0.24465621;stroke-opacity:1"
-       id="rect13347-8-7-3-9-8-4"
-       width="184.90932"
-       height="83.159996"
-       x="306.94687"
-       y="28.905733"
-       ry="5"
-       rx="5" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.13067055px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
-       x="325.38718"
-       y="45.185802"
-       id="text13317-9-72-9-2-4-90"
-       transform="scale(0.98848035,1.0116539)"><tspan
-         sodipodi:role="line"
-         id="tspan13315-2-2-5-2-8-6"
-         x="325.38718"
-         y="45.185802"
-         style="text-align:start;text-anchor:start;stroke-width:0.26766673">Generator method</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.85155821px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26766673"
-       x="318.25711"
-       y="58.601116"
-       id="text13327-2-6-5-6-8-0"
-       transform="scale(0.98848035,1.0116539)"><tspan
-         sodipodi:role="line"
-         x="318.25711"
-         y="58.601116"
-         style="stroke-width:0.26766673"
-         id="tspan21798">function by_one_generator(){ </tspan><tspan
-         sodipodi:role="line"
-         x="318.25711"
-         y="68.415565"
-         style="stroke-width:0.26766673"
-         id="tspan21800">  for($i = 0; $i &lt; 10; $i++){ </tspan><tspan
-         sodipodi:role="line"
-         x="318.25711"
-         y="78.230011"
-         style="stroke-width:0.26766673"
-         id="tspan21802">    yield $i; </tspan><tspan
-         sodipodi:role="line"
-         x="318.25711"
-         y="88.044456"
-         style="stroke-width:0.26766673"
-         id="tspan21804">  } </tspan><tspan
-         sodipodi:role="line"
-         x="318.25711"
-         y="97.85891"
-         style="stroke-width:0.26766673"
-         id="tspan21806">}</tspan></text>
-    <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.32391587;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.35452628;stroke-opacity:1"
        id="rect13347-8-7-3-9-4"
-       width="226.87814"
-       height="118.80443"
-       x="25.225554"
-       y="160.37556"
+       width="248.08722"
+       height="130.15273"
+       x="25.237762"
+       y="148.50777"
        ry="4.4586945"
        rx="4.9986105" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93333244px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="38.484394"
-       y="176.75665"
+       x="38.488838"
+       y="164.88109"
        id="text13317-9-72-9-2-0"><tspan
          sodipodi:role="line"
          id="tspan13315-2-2-5-2-8"
-         x="38.484394"
-         y="176.75665"
+         x="38.488838"
+         y="164.88109"
          style="text-align:start;text-anchor:start;stroke-width:0.26458332">Generator method</tspan></text>
     <g
-       transform="matrix(0.44097221,0,0,-0.44097221,313.30428,277.99121)"
+       transform="matrix(0.44097221,0,0,-0.44097221,317.73794,270.76611)"
        inkscape:label="yieldSplitting"
        id="g17319">
       <g
@@ -15018,31 +15019,31 @@
       </g>
     </g>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.33228368;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.36838332;stroke-opacity:1"
        id="rect13347-8-7-3-9-4-1"
-       width="181.02055"
-       height="156.69348"
-       x="308.89374"
-       y="122.48651"
+       width="210.24838"
+       height="165.81662"
+       x="300.58771"
+       y="112.86163"
        ry="4.4586945"
        rx="4.9986105" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93333244px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="343.14285"
-       y="138.85962"
+       x="349.45074"
+       y="129.23311"
        id="text13317-9-72-9-2-0-5"><tspan
          sodipodi:role="line"
          id="tspan13315-2-2-5-2-8-7"
-         x="343.14285"
-         y="138.85962"
+         x="349.45074"
+         y="129.23311"
          style="text-align:start;text-anchor:start;stroke-width:0.26458332">Yield splitting</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.55499411;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.56785285;stroke-opacity:1"
        id="rect13347-8-7-3-9-4-1-9"
-       width="269.12"
+       width="281.73502"
        height="294.03"
-       x="546.65002"
+       x="534.03479"
        y="-14.850007"
        ry="4.4586945"
        rx="4.9986105" />
